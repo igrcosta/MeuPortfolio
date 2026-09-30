@@ -1,122 +1,56 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+// Importa a função de estado 'useState' do coração do React
+import { useState } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Importa o componente 'Rnd' da biblioteca externa 'react-rnd' que faz a mágica de arrastar/redimensionar
+import { Rnd } from 'react-rnd';
 
+// Define a função principal da tela. O 'export default' permite que o React execute este componente
+export default function App() {
+
+  // Cria a memória da tela:
+  // 'janelaAberta' guarda o valor (true ou false)
+  // 'setJanelaAberta' é a ÚNICA função que pode alterar esse valor
+  // 'useState(false)' define que a janela começa FECHADA (false)
+  const [janelaAberta, setJanelaAberta] = useState(false);
+
+  // O 'return' entrega pro navegador tudo o que deve ser desenhado visualmente na tela
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+
+    // Div principal que serve de "Área de Trabalho" (Desktop)
+    // style={{ ... }} passa propriedades de CSS em formato de objeto JavaScript
+    // width: '100vw' = 100% da largura da tela | height: '100vh' = 100% da altura da tela
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#0f172a' }}>
+      
+      {/* Botão que simula o Ícone do App */}
+      {/* onClick={() => setJanelaAberta(true)} diz: ao clicar, chame a função e mude 'janelaAberta' para true */}
+      <button onClick={() => setJanelaAberta(true)}>
+        Abrir YouTube
+      </button>
+
+      {/* RENDERIZAÇÃO CONDICIONAL: O operador '&&' (E lógico) funciona como um "Se... então..." */}
+      {/* Se 'janelaAberta' for true, o React executa e desenha o que está dentro dos parênteses () */}
+      {janelaAberta && (
+
+        // Componente do react-rnd que cria a caixa com física de drag-and-drop
+        // 'default' define a posição inicial (x:100, y:100) e o tamanho inicial em pixels
+        // 'bounds="parent"' impede que a janela seja arrastada para fora da div pai (a tela escura)
+        <Rnd
+          default={{ x: 100, y: 100, width: 400, height: 300 }}
+          bounds="parent"
         >
-          Count is {count}
-        </button>
-      </section>
+          {/* Div interna para dar a cor escura, texto branco e padding para o conteúdo da janela */}
+          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
+            
+            {/* Botão de Fechar 'X' */}
+            {/* Ao clicar, chama setJanelaAberta(false). O React percebe que mudou pra false e APAGA a janela da tela */}
+            <button onClick={() => setJanelaAberta(false)}>X</button>
+            
+            {/* Texto simples exibido dentro da janela */}
+            <p>Minha primeira janela interativa!</p>
+          </div>
+        </Rnd>
+      )}
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App
