@@ -1,52 +1,77 @@
-// Importa a função de estado 'useState' do coração do React
 import { useState } from 'react';
-
-// Importa o componente 'Rnd' da biblioteca externa 'react-rnd' que faz a mágica de arrastar/redimensionar
 import { Rnd } from 'react-rnd';
 
-// Define a função principal da tela. O 'export default' permite que o React execute este componente
 export default function App() {
 
-  // Cria a memória da tela:
-  // 'janelaAberta' guarda o valor (true ou false)
-  // 'setJanelaAberta' é a ÚNICA função que pode alterar esse valor
-  // 'useState(false)' define que a janela começa FECHADA (false)
-  const [janelaAberta, setJanelaAberta] = useState(false);
+  // 1. estados -> servem como nossos aplicativos
+  const [janelaYoutube, setJanelaYoutube] = useState(false);
+  const [janelaJogos, setJanelaJogos] = useState(false);
+  const [janelaCertificados, setJanelaCertificados] = useState(false);
 
-  // O 'return' entrega pro navegador tudo o que deve ser desenhado visualmente na tela
   return (
-
-    // Div principal que serve de "Área de Trabalho" (Desktop)
-    // style={{ ... }} passa propriedades de CSS em formato de objeto JavaScript
-    // width: '100vw' = 100% da largura da tela | height: '100vh' = 100% da altura da tela
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#0f172a' }}>
+    // Área de trabalho, desktop
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#0f172a', position: 'relative' }}>
       
-      {/* Botão que simula o Ícone do App */}
-      {/* onClick={() => setJanelaAberta(true)} diz: ao clicar, chame a função e mude 'janelaAberta' para true */}
-      <button onClick={() => setJanelaAberta(true)}>
-        Abrir YouTube
-      </button>
-
-      {/* RENDERIZAÇÃO CONDICIONAL: O operador '&&' (E lógico) funciona como um "Se... então..." */}
-      {/* Se 'janelaAberta' for true, o React executa e desenha o que está dentro dos parênteses () */}
-      {janelaAberta && (
-
-        // Componente do react-rnd que cria a caixa com física de drag-and-drop
-        // 'default' define a posição inicial (x:100, y:100) e o tamanho inicial em pixels
-        // 'bounds="parent"' impede que a janela seja arrastada para fora da div pai (a tela escura)
-        <Rnd
-          default={{ x: 100, y: 100, width: 400, height: 300 }}
-          bounds="parent"
+      {/* Região onde fica os ícones*/}
+      <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+        
+        {/* Ícone 1: YouTube */}
+        <div 
+          onClick={() => setJanelaYoutube(true)}
+          style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          {/* Div interna para dar a cor escura, texto branco e padding para o conteúdo da janela */}
+          <div style={{ fontSize: '40px' }}>📺</div>
+          <span style={{ fontSize: '12px' }}>YouTube</span>
+        </div>
+
+        {/* Ícone 2: Jogos */}
+        <div 
+          onClick={() => setJanelaJogos(true)}
+          style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
+        >
+          <div style={{ fontSize: '40px' }}>🎮</div>
+          <span style={{ fontSize: '12px' }}>Jogos</span>
+        </div>
+
+        {/* Ícone 3: Certificados */}
+        <div 
+          onClick={() => setJanelaCertificados(true)}
+          style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
+        >
+          <div style={{ fontSize: '40px' }}>📜</div>
+          <span style={{ fontSize: '12px' }}>Certificados</span>
+        </div>
+
+      </div>
+
+      {/* 3. JANELAS (SÓ APARECEM SE O ESTADO FOR TRUE) */}
+
+      {/* JANELA DO YOUTUBE */}
+      {janelaYoutube && (
+        <Rnd default={{ x: 100, y: 100, width: 400, height: 300 }} bounds="parent">
           <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
-            
-            {/* Botão de Fechar 'X' */}
-            {/* Ao clicar, chama setJanelaAberta(false). O React percebe que mudou pra false e APAGA a janela da tela */}
-            <button onClick={() => setJanelaAberta(false)}>X</button>
-            
-            {/* Texto simples exibido dentro da janela */}
-            <p>Minha primeira janela interativa!</p>
+            <button onClick={() => setJanelaYoutube(false)}>X</button>
+            <p>App do YouTube</p>
+          </div>
+        </Rnd>
+      )}
+
+      {/* JANELA DE JOGOS */}
+      {janelaJogos && (
+        <Rnd default={{ x: 150, y: 150, width: 400, height: 300 }} bounds="parent">
+          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
+            <button onClick={() => setJanelaJogos(false)}>X</button>
+            <p>Launcher de Jogos</p>
+          </div>
+        </Rnd>
+      )}
+
+      {/* JANELA DE CERTIFICADOS */}
+      {janelaCertificados && (
+        <Rnd default={{ x: 200, y: 200, width: 400, height: 300 }} bounds="parent">
+          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
+            <button onClick={() => setJanelaCertificados(false)}>X</button>
+            <p>Meus Certificados</p>
           </div>
         </Rnd>
       )}
