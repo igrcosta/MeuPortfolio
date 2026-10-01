@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 
-// certificados que ficam dentro da janela de certificados
+// Certificados que ficam dentro da janela de certificados
 const meusCertificados = [
   {
     id: 1,
     titulo: 'Certificado de Inglês',
     instituicao: 'ILSC - Vancouver🇨🇦',
     imagem: '/images&Icons/canada-flag.png',
-    linkpdf: '/certificates/ILSC - English certificate.pdf'
+    linkPdf: '/certificates/ILSC - English certificate.pdf'
   }
 ];
 
@@ -19,12 +19,10 @@ export default function App() {
   const [janelaJogos, setJanelaJogos] = useState(false);
   const [janelaCertificados, setJanelaCertificados] = useState(false);
 
-
   return (
-    // Área de trabalho, desktop
     <div style={{ width: '100vw', height: '100vh', backgroundColor: '#0f172a', position: 'relative' }}>
 
-      {/* Região onde fica os ícones*/}
+      {/* Área de trabalho, desktop - Região dos Ícones */}
       <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
 
         {/* Ícone 1: YouTube */}
@@ -56,14 +54,22 @@ export default function App() {
 
       </div>
 
-      {/* 3. JANELAS (SÓ APARECEM SE O ESTADO FOR TRUE) */}
+      {/* JANELAS (SÓ APARECEM SE O ESTADO FOR TRUE) */}
 
       {/* JANELA DO YOUTUBE */}
       {janelaYoutube && (
         <Rnd default={{ x: 100, y: 100, width: 400, height: 300 }} bounds="parent">
           <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
             <button onClick={() => setJanelaYoutube(false)}>X</button>
-            <p>App do YouTube</p>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/xckdE-H2auY?si=CHk1pBx81wvSNTdy"
+              title="YouTube video player"
+              style={{ border: 'none', borderRadius: '8px' }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
         </Rnd>
       )}
@@ -80,21 +86,20 @@ export default function App() {
 
       {/* JANELA DE CERTIFICADOS */}
       {janelaCertificados && (
-        <Rnd default={{ x: 200, y: 200, width: 400, height: 300 }} bounds="parent">
-          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
+        <Rnd default={{ x: 200, y: 200, width: 400, height: 350 }} bounds="parent">
+          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px', overflowY: 'auto' }}>
             <button onClick={() => setJanelaCertificados(false)}>X</button>
 
-            //randerizando a lista dos certificados por meio do map abaixo
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px', }}>
+            {/* Renderizando a lista dos certificados por meio do map abaixo */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px', marginTop: '10px' }}>
               {meusCertificados.map((cert) => (
                 <div key={cert.id} style={{ background: '#0f172a', borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
 
-                  {/*Imagem de Preview*/}
+                  {/* Imagem de Preview */}
                   <img
                     src={cert.imagem}
                     alt={cert.titulo}
-                    style={{ width: '100%', heigh: '110px', objectFit: 'cover', borderRadius: '4px' }}
+                    style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '4px' }}
                   />
 
                   {/* Título e Instituição */}
@@ -112,7 +117,6 @@ export default function App() {
                   </a>
 
                 </div>
-
               ))}
             </div>
 
