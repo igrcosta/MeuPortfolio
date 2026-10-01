@@ -39,7 +39,7 @@ export default function App() {
           onClick={() => setJanelaJogos(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}>🎮</div>
+          <div style={{ fontSize: '40px' }}> <img src ="/images&Icons/gameControllerIcon.png"></img></div>
           <span style={{ fontSize: '12px' }}>Jogos</span>
         </div>
 
