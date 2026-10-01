@@ -1,22 +1,34 @@
 import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 
+// certificados que ficam dentro da janela de certificados
+const meusCertificados = [
+  {
+    id: 1,
+    titulo: 'Certificado de Inglês',
+    instituicao: 'ILSC - Vancouver🇨🇦',
+    imagem: '/images&Icons/canada-flag.png',
+    linkpdf: '/certificates/ILSC - English certificate.pdf'
+  }
+];
+
 export default function App() {
 
-  // 1. estados -> servem como nossos aplicativos
+  // Estados -> servem como nossos aplicativos
   const [janelaYoutube, setJanelaYoutube] = useState(false);
   const [janelaJogos, setJanelaJogos] = useState(false);
   const [janelaCertificados, setJanelaCertificados] = useState(false);
 
+
   return (
     // Área de trabalho, desktop
     <div style={{ width: '100vw', height: '100vh', backgroundColor: '#0f172a', position: 'relative' }}>
-      
+
       {/* Região onde fica os ícones*/}
       <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
-        
+
         {/* Ícone 1: YouTube */}
-        <div 
+        <div
           onClick={() => setJanelaYoutube(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
@@ -25,7 +37,7 @@ export default function App() {
         </div>
 
         {/* Ícone 2: Jogos */}
-        <div 
+        <div
           onClick={() => setJanelaJogos(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
@@ -34,7 +46,7 @@ export default function App() {
         </div>
 
         {/* Ícone 3: Certificados */}
-        <div 
+        <div
           onClick={() => setJanelaCertificados(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
@@ -71,7 +83,39 @@ export default function App() {
         <Rnd default={{ x: 200, y: 200, width: 400, height: 300 }} bounds="parent">
           <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
             <button onClick={() => setJanelaCertificados(false)}>X</button>
-            <p>Meus Certificados</p>
+
+            //randerizando a lista dos certificados por meio do map abaixo
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px', }}>
+              {meusCertificados.map((cert) => (
+                <div key={cert.id} style={{ background: '#0f172a', borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
+
+                  {/*Imagem de Preview*/}
+                  <img
+                    src={cert.imagem}
+                    alt={cert.titulo}
+                    style={{ width: '100%', heigh: '110px', objectFit: 'cover', borderRadius: '4px' }}
+                  />
+
+                  {/* Título e Instituição */}
+                  <h4 style={{ margin: '8px 0 4px', fontSize: '14px' }}>{cert.titulo}</h4>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', margin: '0 0 10px' }}>{cert.instituicao}</p>
+
+                  {/* Link para abrir o PDF */}
+                  <a
+                    href={cert.linkPdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'inline-block', background: '#2563eb', color: '#fff', padding: '6px 12px', borderRadius: '4px', textDecoration: 'none', fontSize: '12px' }}
+                  >
+                    📄 Ver PDF
+                  </a>
+
+                </div>
+
+              ))}
+            </div>
+
           </div>
         </Rnd>
       )}
