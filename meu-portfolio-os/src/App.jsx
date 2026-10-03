@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 
+// Apps importados
+import YoutubeApp from './YoutubeApp';
+
 // Certificados que ficam dentro da janela de certificados
 const meusCertificados = [
   {
@@ -10,7 +13,6 @@ const meusCertificados = [
     imagem: '/certificates/EnglishCertificatePreview.png',
     linkPdf: '/certificates/ILSC - English certificate.pdf'
   },
-
   {
     id: 2,
     titulo: 'Certificado Gemini Academy',
@@ -38,7 +40,7 @@ export default function App() {
           onClick={() => setJanelaYoutube(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}><img src="/images&Icons/YTlogo.webp" style={{ width: '60px', height: '40px' }}></img></div>
+          <div style={{ fontSize: '40px' }}><img src="/images&Icons/YTlogo.webp" alt="YouTube" style={{ width: '60px', height: '40px' }} /></div>
           <span style={{ fontSize: '12px' }}>YouTube</span>
         </div>
 
@@ -47,7 +49,7 @@ export default function App() {
           onClick={() => setJanelaJogos(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}> <img src="/images&Icons/gameControllerIcon.png" style={{ width: '40px', height: '40px', objectFit: 'contain' }}></img></div>
+          <div style={{ fontSize: '40px' }}><img src="/images&Icons/gameControllerIcon.png" alt="Jogos" style={{ width: '40px', height: '40px', objectFit: 'contain' }} /></div>
           <span style={{ fontSize: '12px' }}>Jogos</span>
         </div>
 
@@ -56,7 +58,7 @@ export default function App() {
           onClick={() => setJanelaCertificados(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}><img src="/images&Icons/documentICON.png" style={{ width: '40px', height: '40px', objectFit: 'contain' }}></img></div>
+          <div style={{ fontSize: '40px' }}><img src="/images&Icons/documentICON.png" alt="Certificados" style={{ width: '40px', height: '40px', objectFit: 'contain' }} /></div>
           <span style={{ fontSize: '12px' }}>Certificados</span>
         </div>
 
@@ -66,18 +68,55 @@ export default function App() {
 
       {/* JANELA DO YOUTUBE */}
       {janelaYoutube && (
-        <Rnd default={{ x: 100, y: 100, width: 400, height: 300 }} bounds="parent">
-          <div style={{ background: '#22262c', color: '#fff', height: '100%', padding: '10px' }}>
-            <button onClick={() => setJanelaYoutube(false)}>X</button>
-            <iframe
-              width="100%"
-              height="200"
-              src="https://www.youtube.com/embed/xckdE-H2auY?si=CHk1pBx81wvSNTdy"
-              title="YouTube video player"
-              style={{ border: 'none', borderRadius: '8px' }}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+        <Rnd default={{ x: 100, y: 100, width: 750, height: 500 }} bounds="parent">
+          <div style={{
+            background: '#0f0f0f',
+            color: '#fff',
+            height: '100%',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+            border: '1px solid #272727'
+          }}>
+
+            {/* Barra de Título Superior da Janela (Estilo OS) */}
+            <div style={{
+              background: '#1f1f1f',
+              padding: '8px 12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom: '1px solid #333'
+            }}>
+              <span style={{ fontWeight: 'bold', fontSize: '13px', color: '#e2e8f0' }}>YouTube - Web OS Browser</span>
+              <button
+                onClick={() => setJanelaYoutube(false)}
+                style={{
+                  background: '#ff4d4d',
+                  color: '#fff',
+                  border: 'none',
+                  width: '22px',
+                  height: '22px',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  fontSize: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                X
+              </button>
+            </div>
+
+            {/* Conteúdo da Aplicação do YouTube */}
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <YoutubeApp />
+            </div>
+
           </div>
         </Rnd>
       )}
@@ -107,7 +146,7 @@ export default function App() {
             padding: '10px',
             overflowY: 'hidden'
           }}>
-            {/*Barra Título*/}
+            {/* Barra Título */}
             <div style={{
               background: '#2a2d32',
               padding: '10px 16px',
@@ -175,7 +214,7 @@ export default function App() {
                       }}
                     />
 
-                    {/* Camada Transparente com Gradiente (Melhora a leitura do texto) */}
+                    {/* Camada Transparente com Gradiente */}
                     <div style={{
                       position: 'absolute',
                       top: 0,
@@ -210,6 +249,6 @@ export default function App() {
         </Rnd>
       )}
 
-    </div >
+    </div>
   );
 }
