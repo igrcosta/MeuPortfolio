@@ -20,7 +20,7 @@ export default function App() {
   const [janelaCertificados, setJanelaCertificados] = useState(false);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#0f172a', position: 'relative' }}>
+    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#383f4e', position: 'relative' }}>
 
       {/* Área de trabalho, desktop - Região dos Ícones */}
       <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
@@ -30,7 +30,7 @@ export default function App() {
           onClick={() => setJanelaYoutube(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}>📺</div>
+          <div style={{ fontSize: '40px' }}><img src="/images&Icons/YTlogo.webp" style={{ width: '60px', height: '40px' }}></img></div>
           <span style={{ fontSize: '12px' }}>YouTube</span>
         </div>
 
@@ -39,7 +39,7 @@ export default function App() {
           onClick={() => setJanelaJogos(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}> <img src ="/images&Icons/gameControllerIcon.png"></img></div>
+          <div style={{ fontSize: '40px' }}> <img src="/images&Icons/gameControllerIcon.png" style={{ width: '40px', height: '40px', objectFit: 'contain' }}></img></div>
           <span style={{ fontSize: '12px' }}>Jogos</span>
         </div>
 
@@ -48,7 +48,7 @@ export default function App() {
           onClick={() => setJanelaCertificados(true)}
           style={{ textAlign: 'center', color: '#fff', cursor: 'pointer', width: '80px' }}
         >
-          <div style={{ fontSize: '40px' }}>📜</div>
+          <div style={{ fontSize: '40px' }}><img src="/images&Icons/documentICON.png" style={{ width: '40px', height: '40px', objectFit: 'contain' }}></img></div>
           <span style={{ fontSize: '12px' }}>Certificados</span>
         </div>
 
@@ -59,7 +59,7 @@ export default function App() {
       {/* JANELA DO YOUTUBE */}
       {janelaYoutube && (
         <Rnd default={{ x: 100, y: 100, width: 400, height: 300 }} bounds="parent">
-          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px' }}>
+          <div style={{ background: '#22262c', color: '#fff', height: '100%', padding: '10px' }}>
             <button onClick={() => setJanelaYoutube(false)}>X</button>
             <iframe
               width="100%"
