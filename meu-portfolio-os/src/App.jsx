@@ -6,9 +6,17 @@ const meusCertificados = [
   {
     id: 1,
     titulo: 'Certificado de Inglês',
-    instituicao: 'ILSC - Vancouver🇨🇦',
-    imagem: '/images&Icons/canada-flag.png',
+    instituicao: 'ILSC - Vancouver',
+    imagem: '/certificates/EnglishCertificatePreview.png',
     linkPdf: '/certificates/ILSC - English certificate.pdf'
+  },
+
+  {
+    id: 2,
+    titulo: 'Certificado Gemini Academy',
+    instituicao: 'Google For Education',
+    imagem: '/certificates/GeminiDocPreview.png',
+    linkPdf: '/certificates/Certificado-Gemini-Lab.pdf'
   }
 ];
 
@@ -86,44 +94,122 @@ export default function App() {
 
       {/* JANELA DE CERTIFICADOS */}
       {janelaCertificados && (
-        <Rnd default={{ x: 200, y: 200, width: 400, height: 350 }} bounds="parent">
-          <div style={{ background: '#1e293b', color: '#fff', height: '100%', padding: '10px', overflowY: 'auto' }}>
-            <button onClick={() => setJanelaCertificados(false)}>X</button>
+        <Rnd default={{ x: 150, y: 80, width: 620, height: 440 }} bounds="parent">
+          <div style={{
+            background: '#2a2d32',
+            color: '#fff',
+            height: '100%',
+            borderRadius: '8px',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+            border: '1px solid #3a3f47',
+            padding: '10px',
+            overflowY: 'hidden'
+          }}>
+            {/*Barra Título*/}
+            <div style={{
+              background: '#2a2d32',
+              padding: '10px 16px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+              <span style={{ fontWeight: 'bold', fontSize: '15px', color: '#e2e8f0' }}>Certificados</span>
 
-            {/* Renderizando a lista dos certificados por meio do map abaixo */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px', marginTop: '10px' }}>
-              {meusCertificados.map((cert) => (
-                <div key={cert.id} style={{ background: '#0f172a', borderRadius: '8px', padding: '10px', textAlign: 'center' }}>
+              <button
+                onClick={() => setJanelaCertificados(false)}
+                style={{
+                  background: '#ff4d4d',
+                  color: '#fff',
+                  border: 'none',
+                  width: '22px',
+                  height: '22px',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  fontSize: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                X
+              </button>
+            </div>
 
-                  {/* Imagem de Preview */}
-                  <img
-                    src={cert.imagem}
-                    alt={cert.titulo}
-                    style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '4px' }}
-                  />
-
-                  {/* Título e Instituição */}
-                  <h4 style={{ margin: '8px 0 4px', fontSize: '14px' }}>{cert.titulo}</h4>
-                  <p style={{ fontSize: '12px', color: '#94a3b8', margin: '0 0 10px' }}>{cert.instituicao}</p>
-
-                  {/* Link para abrir o PDF */}
+            {/* Conteúdo: Grade de Cards (2 por linha) */}
+            <div style={{ padding: '16px', overflowY: 'auto', flex: 1 }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '16px'
+              }}>
+                {meusCertificados.map((cert) => (
                   <a
+                    key={cert.id}
                     href={cert.linkPdf}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ display: 'inline-block', background: '#2563eb', color: '#fff', padding: '6px 12px', borderRadius: '4px', textDecoration: 'none', fontSize: '12px' }}
+                    style={{
+                      position: 'relative',
+                      height: '160px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      textDecoration: 'none',
+                      display: 'block',
+                      border: '1px solid #444',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                      transition: 'transform 0.2s',
+                      cursor: 'pointer'
+                    }}
                   >
-                    📄 Ver PDF
-                  </a>
+                    {/* Imagem de Fundo do Card */}
+                    <img
+                      src={cert.imagem}
+                      alt={cert.titulo}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
 
-                </div>
-              ))}
+                    {/* Camada Transparente com Gradiente (Melhora a leitura do texto) */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%)'
+                    }} />
+
+                    {/* Informações Sobrepostas na Parte Inferior */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '12px',
+                      left: '12px',
+                      right: '12px',
+                      color: '#ffffff',
+                      zIndex: 2
+                    }}>
+                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 'bold' }}>
+                        {cert.titulo}
+                      </h4>
+                      <p style={{ margin: '3px 0 0', fontSize: '12px', color: '#cbd5e1' }}>
+                        {cert.instituicao}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
 
           </div>
         </Rnd>
       )}
 
-    </div>
+    </div >
   );
 }
