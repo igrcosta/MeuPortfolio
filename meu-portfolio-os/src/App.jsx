@@ -66,9 +66,9 @@ export default function App() {
 
       {/* JANELAS (SÓ APARECEM SE O ESTADO FOR TRUE) */}
 
-      {/* JANELA DO YOUTUBE */}
+      {/* JANELA YOUTUBE */}
       {janelaYoutube && (
-        <Rnd default={{ x: 100, y: 100, width: 750, height: 500 }} bounds="parent">
+        <Rnd default={{ x: 100, y: 100, width: 1000, height: 700 }} bounds="parent">
           <div style={{
             background: '#0f0f0f',
             color: '#fff',
@@ -81,7 +81,7 @@ export default function App() {
             border: '1px solid #272727'
           }}>
 
-            {/* Barra de Título Superior da Janela (Estilo OS) */}
+            {/* Barra de Título Superior da Janela*/}
             <div style={{
               background: '#1f1f1f',
               padding: '8px 12px',
