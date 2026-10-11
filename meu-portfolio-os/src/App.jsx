@@ -11,6 +11,7 @@ import useIsMobile from './hooks/useIsMobile';
 import YoutubeApp from './apps/YoutubeApp';
 import Certificados from './apps/Certificados';
 import SobreMim from './apps/SobreMim';
+import Projetos from './apps/Projetos';
 import EmConstrucao from './apps/EmConstrucao';
 
 // LISTA DE APPS DO OS
@@ -23,7 +24,7 @@ import EmConstrucao from './apps/EmConstrucao';
 //   conteudo  -> o que aparece dentro da janela
 const apps = [
   { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: '#38bdf8', tamanho: { width: 700, height: 520 }, conteudo: < SobreMim /> },
-  { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: '#a78bfa', tamanho: { width: 800, height: 600 }, conteudo: <EmConstrucao nome="Projetos" /> },
+  { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: '#a78bfa', tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
   { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: '#fbbf24', tamanho: { width: 700, height: 520 }, conteudo: <EmConstrucao nome="Experiências" /> },
   { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: '#4ade80', tamanho: { width: 600, height: 560 }, conteudo: <EmConstrucao nome="Contato" /> },
   { id: 'youtube', nome: 'YouTube', icone: '/images&Icons/YTlogo.webp', tamanho: { width: 1000, height: 700 }, conteudo: <YoutubeApp /> },
@@ -36,7 +37,12 @@ export default function App() {
 
   // Lista com os ids das janelas abertas.
   // A ORDEM importa: a última da lista é a que está na frente.
-  const [janelasAbertas, setJanelasAbertas] = useState([]);
+  // Links como "?abrir=sobre,youtube" já abrem esses apps (bom para divulgar na bio/vídeos)
+  const [janelasAbertas, setJanelasAbertas] = useState(() => {
+    const pedidos = new URLSearchParams(window.location.search).get('abrir');
+    if (!pedidos) return [];
+    return pedidos.split(',').filter((id) => apps.some((app) => app.id === id));
+  });
 
   // Abre o app (ou traz pra frente se já estiver aberto):
   // tira o id da lista e coloca de novo no final
