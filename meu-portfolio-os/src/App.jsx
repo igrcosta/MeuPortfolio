@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 
-// Apps importados
+// Apps e props que fiz para serem importados
+import Janela from './components/Janela';
 import YoutubeApp from './YoutubeApp';
 
 // Certificados que ficam dentro da janela de certificados
@@ -68,58 +69,11 @@ export default function App() {
 
       {/* JANELA YOUTUBE */}
       {janelaYoutube && (
-        <Rnd default={{ x: 100, y: 100, width: 1000, height: 700 }} bounds="parent">
-          <div style={{
-            background: '#0f0f0f',
-            color: '#fff',
-            height: '100%',
-            borderRadius: '8px',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-            border: '1px solid #272727'
-          }}>
-
-            {/* Barra de Título Superior da Janela*/}
-            <div style={{
-              background: '#1f1f1f',
-              padding: '8px 12px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottom: '1px solid #333'
-            }}>
-              <span style={{ fontWeight: 'bold', fontSize: '13px', color: '#e2e8f0' }}>YouTube - Web OS Browser</span>
-              <button
-                onClick={() => setJanelaYoutube(false)}
-                style={{
-                  background: '#ff4d4d',
-                  color: '#fff',
-                  border: 'none',
-                  width: '22px',
-                  height: '22px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                X
-              </button>
-            </div>
-
-            {/* Conteúdo da Aplicação do YouTube */}
-            <div style={{ flex: 1, overflow: 'hidden' }}>
-              <YoutubeApp />
-            </div>
-
-          </div>
-        </Rnd>
+        <Janela titulo="YouTube" onClose={() => setJanelaYoutube(false)}>
+          <YoutubeApp />
+        </Janela>
       )}
+
 
       {/* JANELA DE JOGOS */}
       {janelaJogos && (

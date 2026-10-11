@@ -14,7 +14,7 @@ export default function YoutubeApp() {
             setLikes(likes - 1);
             setLiked(false);
         } else {
-            setLikes(Likes + 1);
+            setLikes(likes + 1);
             setLiked(true);
         }
     };
