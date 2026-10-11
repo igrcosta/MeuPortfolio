@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import Icone from './Icone';
 
 // Barra de tarefas do OS = menu de navegação + rodapé exigidos no PDF do Aramuni.
 // Props:
 //   apps            -> lista de apps [{ id, nome, icone }]
 //   janelasAbertas  -> lista de ids dos apps abertos
 //   onAbrir(id)     -> função chamada quando clica em um app
-export default function Taskbar({ apps, janelasAbertas, onAbrir }) {
+//   compacta        -> true no celular: mostra só os ícones
+export default function Taskbar({ apps, janelasAbertas, onAbrir, compacta = false }) {
   const [agora, setAgora] = useState(new Date());
 
   // Atualiza o relógio a cada 30 segundos
@@ -58,8 +60,9 @@ export default function Taskbar({ apps, janelasAbertas, onAbrir }) {
                 whiteSpace: 'nowrap'
               }}
             >
-              <img src={app.icone} alt="" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
-              <span>{app.nome}</span>
+              <Icone icone={app.icone} tamanho={20} cor={app.cor} />
+              {/* No celular mostra só o ícone, para caber todos */}
+              {!compacta && <span>{app.nome}</span>}
             </button>
           );
         })}
