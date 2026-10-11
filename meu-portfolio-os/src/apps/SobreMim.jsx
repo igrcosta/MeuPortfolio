@@ -69,6 +69,20 @@ export default function SobreMim() {
         ))}
       </ul>
 
+      {/* Meu lado Pessoal */}
+      <h3 style={{ color: '#38bdf8', marginTop: '24px' }}>{texto.tituloMyself}</h3>
+      <ul style={{ lineHeight: 1.7, fontSize: '14px', paddingLeft: '20px' }}>
+        {texto.myself.map((item, i) => (
+          <li key={i}>{item.texto}
+            {item.link && (
+              <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', display: 'block' }}>
+                {item.textoLink}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+
       {/* Habilidades em "chips" */}
       <h3 style={{ color: '#38bdf8', marginTop: '24px' }}>{texto.tituloHabilidades}</h3>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
