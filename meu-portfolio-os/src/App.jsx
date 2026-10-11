@@ -10,6 +10,7 @@ import useIsMobile from './hooks/useIsMobile';
 // Apps
 import YoutubeApp from './apps/YoutubeApp';
 import Certificados from './apps/Certificados';
+import SobreMim from './apps/SobreMim';
 import EmConstrucao from './apps/EmConstrucao';
 
 // LISTA DE APPS DO OS
@@ -21,7 +22,7 @@ import EmConstrucao from './apps/EmConstrucao';
 //   tamanho   -> tamanho inicial da janela no PC
 //   conteudo  -> o que aparece dentro da janela
 const apps = [
-  { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: '#38bdf8', tamanho: { width: 700, height: 520 }, conteudo: <EmConstrucao nome="Sobre Mim" /> },
+  { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: '#38bdf8', tamanho: { width: 700, height: 520 }, conteudo: < SobreMim /> },
   { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: '#a78bfa', tamanho: { width: 800, height: 600 }, conteudo: <EmConstrucao nome="Projetos" /> },
   { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: '#fbbf24', tamanho: { width: 700, height: 520 }, conteudo: <EmConstrucao nome="Experiências" /> },
   { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: '#4ade80', tamanho: { width: 600, height: 560 }, conteudo: <EmConstrucao nome="Contato" /> },
