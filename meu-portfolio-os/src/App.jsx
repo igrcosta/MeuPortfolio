@@ -12,6 +12,8 @@ import YoutubeApp from './apps/YoutubeApp';
 import Certificados from './apps/Certificados';
 import SobreMim from './apps/SobreMim';
 import Projetos from './apps/Projetos';
+import Experiencias from './apps/Experiencias';
+import Contato from './apps/Contato';
 import EmConstrucao from './apps/EmConstrucao';
 
 // LISTA DE APPS DO OS
@@ -25,8 +27,8 @@ import EmConstrucao from './apps/EmConstrucao';
 const apps = [
   { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: '#38bdf8', tamanho: { width: 700, height: 520 }, conteudo: < SobreMim /> },
   { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: '#a78bfa', tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
-  { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: '#fbbf24', tamanho: { width: 700, height: 520 }, conteudo: <EmConstrucao nome="Experiências" /> },
-  { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: '#4ade80', tamanho: { width: 600, height: 560 }, conteudo: <EmConstrucao nome="Contato" /> },
+  { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: '#fbbf24', tamanho: { width: 700, height: 520 }, conteudo: <Experiencias /> },
+  { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: '#4ade80', tamanho: { width: 600, height: 560 }, conteudo: <Contato /> },
   { id: 'youtube', nome: 'YouTube', icone: '/images&Icons/YTlogo.webp', tamanho: { width: 1000, height: 700 }, conteudo: <YoutubeApp /> },
   { id: 'certificados', nome: 'Certificados', icone: '/images&Icons/documentICON.png', tamanho: { width: 620, height: 440 }, conteudo: <Certificados /> },
   { id: 'jogos', nome: 'Jogos', icone: '/images&Icons/gameControllerIcon.png', tamanho: { width: 400, height: 300 }, conteudo: <EmConstrucao nome="Launcher de Jogos" /> }
