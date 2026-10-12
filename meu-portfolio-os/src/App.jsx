@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { FaUser, FaCode, FaBriefcase, FaEnvelope } from 'react-icons/fa';
+import { useCallback, useState } from 'react';
+import { FaUser, FaCode, FaBriefcase, FaEnvelope, FaPlayCircle, FaGithub } from 'react-icons/fa';
 
 // Componentes do "sistema operacional"
 import Janela from './components/Janela';
 import IconeDesktop from './components/IconeDesktop';
 import Taskbar from './components/Taskbar';
+import BootScreen from './components/BootScreen';
 import useIsMobile from './hooks/useIsMobile';
 
 // Apps
@@ -14,7 +15,9 @@ import SobreMim from './apps/SobreMim';
 import Projetos from './apps/Projetos';
 import Experiencias from './apps/Experiencias';
 import Contato from './apps/Contato';
-import EmConstrucao from './apps/EmConstrucao';
+import Jogos from './apps/Jogos';
+import GitHubStats from './apps/GitHubStats';
+import BoasVindas from './apps/BoasVindas';
 
 // LISTA DE APPS DO OS
 // Para criar um app novo, basta adicionar um item aqui:
@@ -25,13 +28,15 @@ import EmConstrucao from './apps/EmConstrucao';
 //   tamanho   -> tamanho inicial da janela no PC
 //   conteudo  -> o que aparece dentro da janela
 const apps = [
+  { id: 'boasvindas', nome: 'Boas-vindas', icone: FaPlayCircle, cor: '#f472b6', tamanho: { width: 760, height: 560 }, conteudo: <BoasVindas /> },
   { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: '#38bdf8', tamanho: { width: 700, height: 520 }, conteudo: < SobreMim /> },
   { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: '#a78bfa', tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
   { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: '#fbbf24', tamanho: { width: 700, height: 520 }, conteudo: <Experiencias /> },
   { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: '#4ade80', tamanho: { width: 600, height: 560 }, conteudo: <Contato /> },
   { id: 'youtube', nome: 'YouTube', icone: '/images&Icons/YTlogo.webp', tamanho: { width: 1000, height: 700 }, conteudo: <YoutubeApp /> },
   { id: 'certificados', nome: 'Certificados', icone: '/images&Icons/documentICON.png', tamanho: { width: 620, height: 440 }, conteudo: <Certificados /> },
-  { id: 'jogos', nome: 'Jogos', icone: '/images&Icons/gameControllerIcon.png', tamanho: { width: 400, height: 300 }, conteudo: <EmConstrucao nome="Launcher de Jogos" /> }
+  { id: 'jogos', nome: 'Jogos', icone: '/images&Icons/gameControllerIcon.png', tamanho: { width: 820, height: 560 }, conteudo: <Jogos /> },
+  { id: 'github', nome: 'GitHub', icone: FaGithub, cor: '#e2e8f0', tamanho: { width: 560, height: 600 }, conteudo: <GitHubStats /> }
 ];
 
 export default function App() {
@@ -40,11 +45,31 @@ export default function App() {
   // Lista com os ids das janelas abertas.
   // A ORDEM importa: a última da lista é a que está na frente.
   // Links como "?abrir=sobre,youtube" já abrem esses apps (bom para divulgar na bio/vídeos)
+  // Sem "?abrir=", o OS já começa com a janela de boas-vindas aberta
   const [janelasAbertas, setJanelasAbertas] = useState(() => {
     const pedidos = new URLSearchParams(window.location.search).get('abrir');
-    if (!pedidos) return [];
+    if (!pedidos) return ['boasvindas'];
     return pedidos.split(',').filter((id) => apps.some((app) => app.id === id));
   });
+
+  // Tela de boot: aparece só na primeira vez de cada visita (sessionStorage dura até fechar a aba)
+  const [bootando, setBootando] = useState(() => {
+    try {
+      return !sessionStorage.getItem('bootVisto');
+    } catch {
+      return false;
+    }
+  });
+
+  // useCallback: a função não muda entre renderizações, assim o BootScreen não reinicia os timers
+  const terminarBoot = useCallback(() => {
+    try {
+      sessionStorage.setItem('bootVisto', 'sim');
+    } catch {
+      // navegador bloqueou o sessionStorage: sem problema, só mostra o boot de novo na próxima vez
+    }
+    setBootando(false);
+  }, []);
 
   // Abre o app (ou traz pra frente se já estiver aberto):
   // tira o id da lista e coloca de novo no final
@@ -108,6 +133,9 @@ export default function App() {
       </div>
 
       <Taskbar apps={apps} janelasAbertas={janelasAbertas} onAbrir={abrir} compacta={isMobile} />
+
+      {/* Tela de boot por cima de tudo (só na primeira vez da visita) */}
+      {bootando && <BootScreen onFim={terminarBoot} />}
     </div>
   );
 }
