@@ -85,3 +85,57 @@ grant execute on function public.alternar_curtida(text, uuid) to anon;
 grant execute on function public.ver_curtidas(text, uuid)     to anon;
 grant execute on function public.registrar_visita()           to anon;
 grant execute on function public.ver_visitas()                to anon;
+
+-- ---------- COMENTÁRIOS DOS VÍDEOS ----------
+-- (pode rodar este arquivo inteiro de novo: tudo aqui é "se não existir" / "substituir")
+create table if not exists public.comentarios (
+  id         bigint      generated always as identity primary key,
+  video_id   text        not null,
+  visitante  uuid        not null,
+  apelido    text        not null check (char_length(apelido) between 2 and 24),
+  texto      text        not null check (char_length(texto) between 1 and 500),
+  criado_em  timestamptz not null default now()
+);
+create index if not exists comentarios_video_idx on public.comentarios (video_id, criado_em desc);
+
+alter table public.comentarios enable row level security;
+
+-- Qualquer visitante pode LER os comentários (mas não escrever direto na tabela)
+drop policy if exists "comentarios visiveis para todos" on public.comentarios;
+create policy "comentarios visiveis para todos" on public.comentarios
+  for select to anon using (true);
+
+-- Escrever só por esta função: limpa espaços, valida tamanhos e limita 3 comentários por minuto por visitante
+create or replace function public.comentar(p_video text, p_visitante uuid, p_apelido text, p_texto text)
+returns public.comentarios
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  novo comentarios;
+begin
+  if (select count(*) from comentarios c
+      where c.visitante = p_visitante and c.criado_em > now() - interval '1 minute') >= 3 then
+    raise exception 'Calma! Espere um pouco antes de comentar de novo.';
+  end if;
+
+  insert into comentarios (video_id, visitante, apelido, texto)
+  values (p_video, p_visitante, trim(p_apelido), trim(p_texto))
+  returning * into novo;
+
+  return novo;
+end;
+$$;
+
+-- Leitura só das colunas públicas (o id anônimo do visitante fica escondido)
+revoke select on public.comentarios from anon;
+grant select (id, video_id, apelido, texto, criado_em) on public.comentarios to anon;
+grant execute on function public.comentar(text, uuid, text, text) to anon;
+
+-- Tempo real: avisa o site quando chega comentário novo (todo mundo vê na hora)
+do $$
+begin
+  alter publication supabase_realtime add table public.comentarios;
+exception when duplicate_object then null;
+end $$;

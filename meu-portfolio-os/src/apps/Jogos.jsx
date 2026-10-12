@@ -1,6 +1,7 @@
-import Chip from '@mui/material/Chip';
-import { FaGamepad, FaGithub } from 'react-icons/fa';
+import { FaGamepad, FaGithub, FaPlay } from 'react-icons/fa';
 import { projetos } from '../data/projetos';
+import { cor, fonte, espaco } from '../theme/tokens';
+import { TelaApp, TituloApp, Cartao, Etiqueta, Botao } from '../theme/ui';
 
 // Mesma lista do app Projetos, mas só os itens com tipo 'jogo' (do mais recente pro mais antigo)
 const jogos = projetos
@@ -9,17 +10,12 @@ const jogos = projetos
 
 export default function Jogos() {
   return (
-    <div style={{ background: '#0b0b12', color: '#e2e8f0', height: '100%', overflowY: 'auto', padding: '20px' }}>
-      <h2 style={{ margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <FaGamepad color="#f472b6" /> Launcher de Jogos
-      </h2>
-      <p style={{ margin: '0 0 18px', color: '#94a3b8', fontSize: '14px' }}>
-        Jogos que desenvolvi na faculdade de Jogos Digitais.
-      </p>
+    <TelaApp>
+      <TituloApp Icone={FaGamepad} titulo="Jogos" subtitulo="Jogos que desenvolvi na faculdade de Jogos Digitais." />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: espaco[4] }}>
         {jogos.map((jogo) => (
-          <div key={jogo.id} style={{ background: '#1a1a2e', border: '1px solid #312e81', borderRadius: '12px', overflow: 'hidden' }}>
+          <Cartao key={jogo.id}>
 
             {/* Trailer (se tiver) ou capa provisória */}
             {jogo.video ? (
@@ -37,54 +33,36 @@ export default function Jogos() {
             ) : (
               <div style={{
                 aspectRatio: '16/9',
-                background: 'linear-gradient(135deg, #831843, #1e1b4b)',
+                background: `radial-gradient(ellipse at 30% 0%, ${cor.roxoBrilho}, transparent 70%), radial-gradient(ellipse at 90% 100%, rgba(94, 0, 184, 0.45), transparent 60%), ${cor.pretoRoxo}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '22px',
-                fontWeight: 'bold'
+                fontSize: fonte.xl,
+                fontWeight: fonte.negrito,
+                letterSpacing: '-0.02em'
               }}>
                 {jogo.nome}
               </div>
             )}
 
-            <div style={{ padding: '12px 14px' }}>
-              <h3 style={{ margin: '0 0 6px', fontSize: '16px' }}>{jogo.nome}</h3>
-              <p style={{ margin: '0 0 10px', fontSize: '13px', lineHeight: 1.5, color: '#cbd5e1' }}>{jogo.descricao}</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
+            <div style={{ padding: espaco[4] }}>
+              <h3 style={{ margin: `0 0 ${espaco[1]}`, fontSize: fonte.md, fontWeight: fonte.semi }}>{jogo.nome}</h3>
+              <p style={{ margin: `0 0 ${espaco[3]}`, fontSize: fonte.sm, lineHeight: 1.55, color: cor.textoSecundario }}>{jogo.descricao}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: espaco[4] }}>
                 {jogo.tecnologias.map((tec) => (
-                  <Chip key={tec} label={tec} size="small" variant="outlined" sx={{ color: '#f9a8d4', borderColor: '#9d174d' }} />
+                  <Etiqueta key={tec}>{tec}</Etiqueta>
                 ))}
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: espaco[2] }}>
                 {jogo.link && (
-                  <a href={jogo.link} target="_blank" rel="noopener noreferrer" style={{
-                    background: '#db2777',
-                    color: '#fff',
-                    padding: '6px 14px',
-                    borderRadius: '6px',
-                    textDecoration: 'none',
-                    fontSize: '13px',
-                    fontWeight: 'bold'
-                  }}>
-                    ▶ Jogar
-                  </a>
+                  <Botao href={jogo.link} variante="primario"><FaPlay size={10} /> Jogar</Botao>
                 )}
-                <a href={jogo.github} target="_blank" rel="noopener noreferrer" style={{
-                  color: '#e2e8f0',
-                  padding: '6px 10px',
-                  fontSize: '13px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}>
-                  <FaGithub /> Código
-                </a>
+                <Botao href={jogo.github}><FaGithub /> Código</Botao>
               </div>
             </div>
-          </div>
+          </Cartao>
         ))}
       </div>
-    </div>
+    </TelaApp>
   );
 }

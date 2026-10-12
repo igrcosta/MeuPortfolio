@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import Icone from './Icone';
+import { cor, vidro, raio, sombra, fonte, transicao } from '../theme/tokens';
 
-const ALTURA_TASKBAR = 56;
-
-// Botão de um app na Taskbar: ícone + indicador de "aberto" + nome ao passar o mouse
-function BotaoApp({ app, aberto, ativo, onClick }) {
+// Botão de um app no dock: ícone-ladrilho + pontinho de "aberto" + nome ao passar o mouse
+function BotaoApp({ app, aberto, ativo, onClick, compacta }) {
   const [hover, setHover] = useState(false);
+  const tamanho = compacta ? 36 : 42;
 
   return (
     <button
@@ -15,45 +15,45 @@ function BotaoApp({ app, aberto, ativo, onClick }) {
       aria-label={app.nome}
       style={{
         position: 'relative',
-        background: ativo || hover ? 'rgba(255,255,255,0.12)' : 'transparent',
+        background: 'transparent',
         border: 'none',
-        borderRadius: '8px',
-        width: '44px',
-        height: '44px',
+        padding: '4px',
         flexShrink: 0,
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'background 0.15s'
+        // Leve "pulo" ao passar o mouse, como no dock do macOS
+        transform: hover && !compacta ? 'translateY(-4px) scale(1.08)' : 'none',
+        transition: `transform ${transicao.media}`
       }}
     >
-      <Icone icone={app.icone} tamanho={24} cor={app.cor} />
+      <Icone icone={app.icone} tamanho={tamanho} cor={app.cor} ladrilho />
 
-      {/* Indicador: risquinho embaixo dos apps abertos (maior no app ativo) */}
+      {/* Indicador de app aberto (maior e roxo no app ativo) */}
       {aberto && (
         <span style={{
           position: 'absolute',
-          bottom: '3px',
-          width: ativo ? '16px' : '6px',
-          height: '3px',
-          borderRadius: '2px',
-          background: ativo ? '#a78bfa' : '#94a3b8',
-          transition: 'width 0.2s'
+          bottom: '-3px',
+          width: ativo ? '14px' : '4px',
+          height: '4px',
+          borderRadius: raio.pilula,
+          background: ativo ? cor.roxoClaro : cor.textoSecundario,
+          transition: `width ${transicao.media}`
         }} />
       )}
 
       {/* Nome do app ao passar o mouse */}
-      {hover && (
+      {hover && !compacta && (
         <span style={{
+          ...vidro.painel,
           position: 'absolute',
-          bottom: '52px',
-          background: '#1e1e2e',
-          color: '#e2e8f0',
-          border: '1px solid #333',
-          borderRadius: '6px',
-          padding: '4px 8px',
-          fontSize: '12px',
+          bottom: '62px',
+          color: cor.texto,
+          borderRadius: raio.sm,
+          padding: '5px 10px',
+          fontSize: fonte.xs,
+          fontWeight: fonte.medio,
           whiteSpace: 'nowrap',
           pointerEvents: 'none'
         }}>
@@ -64,19 +64,28 @@ function BotaoApp({ app, aberto, ativo, onClick }) {
   );
 }
 
-// Barra de tarefas do OS = menu de navegação + rodapé exigidos no PDF.
+// Pílula de vidro do dock
+const pilula = {
+  ...vidro.painel,
+  boxShadow: `${vidro.painel.boxShadow}, ${sombra.dock}`,
+  borderRadius: raio.xl,
+  height: '64px',
+  display: 'flex',
+  alignItems: 'center'
+};
+
+// Dock flutuante = menu de navegação + rodapé exigidos no PDF.
 // Props:
-//   apps            -> lista de apps [{ id, nome, icone }]
+//   apps            -> lista de apps [{ id, nome, icone, cor }]
 //   janelasAbertas  -> lista de ids dos apps abertos (o último é o ativo)
 //   minimizadas     -> lista de ids dos apps minimizados
 //   onClicarApp(id) -> função chamada quando clica em um app
-//   compacta        -> true no celular: esconde a data
+//   compacta        -> true no celular
 export default function Taskbar({ apps, janelasAbertas, minimizadas, onClicarApp, compacta = false }) {
   const [agora, setAgora] = useState(new Date());
 
-  // Atualiza o relógio a cada 30 segundos
   useEffect(() => {
-    const timer = setInterval(() => setAgora(new Date()), 30000);
+    const timer = setInterval(() => setAgora(new Date()), 10000);
     return () => clearInterval(timer);
   }, []);
 
@@ -84,32 +93,35 @@ export default function Taskbar({ apps, janelasAbertas, minimizadas, onClicarApp
   const visiveis = janelasAbertas.filter((id) => !minimizadas.includes(id));
   const ativo = visiveis[visiveis.length - 1];
 
+  // "seg., 12 de out." -> "Seg, 12 de out"
+  const dataCurta = agora.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' }).replace(/\./g, '');
+  const data = dataCurta.charAt(0).toUpperCase() + dataCurta.slice(1);
+
   return (
-    <nav style={{
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: `${ALTURA_TASKBAR}px`,
-      background: 'rgba(15, 15, 25, 0.75)',
-      backdropFilter: 'blur(16px)',
-      borderTop: '1px solid rgba(255,255,255,0.08)',
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 12px',
-      gap: '8px',
-      zIndex: 9999
-    }}>
-
-      {/* Logo do sistema */}
-      {!compacta && (
-        <div style={{ fontWeight: 800, fontSize: '15px', color: '#e2e8f0', whiteSpace: 'nowrap', width: '110px' }}>
-          Igor<span style={{ color: '#a78bfa' }}>OS</span>
-        </div>
-      )}
-
-      {/* Apps centralizados (rolam para o lado no celular) */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: compacta ? 'flex-start' : 'center', gap: '4px', overflowX: compacta ? 'auto' : 'visible' }}>
+    <nav
+      aria-label="Dock de aplicativos"
+      style={{
+        position: 'fixed',
+        bottom: '10px',
+        left: compacta ? '8px' : '50%',
+        right: compacta ? '8px' : 'auto',
+        transform: compacta ? 'none' : 'translateX(-50%)',
+        display: 'flex',
+        gap: '10px',
+        zIndex: 9999,
+        fontFamily: fonte.familia,
+        maxWidth: compacta ? 'none' : 'calc(100vw - 20px)'
+      }}
+    >
+      {/* Apps */}
+      <div style={{
+        ...pilula,
+        padding: '0 10px',
+        gap: compacta ? '2px' : '4px',
+        flex: compacta ? 1 : 'none',
+        overflowX: compacta ? 'auto' : 'visible',
+        overflowY: 'visible'
+      }}>
         {apps.map((app) => (
           <BotaoApp
             key={app.id}
@@ -117,15 +129,20 @@ export default function Taskbar({ apps, janelasAbertas, minimizadas, onClicarApp
             aberto={janelasAbertas.includes(app.id)}
             ativo={app.id === ativo}
             onClick={() => onClicarApp(app.id)}
+            compacta={compacta}
           />
         ))}
       </div>
 
-      {/* Relógio */}
-      <div style={{ color: '#e2e8f0', fontSize: '12px', textAlign: 'right', lineHeight: 1.35, width: compacta ? 'auto' : '110px' }}>
-        <div>{agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</div>
-        {!compacta && <div style={{ color: '#94a3b8' }}>{agora.toLocaleDateString('pt-BR')}</div>}
-      </div>
+      {/* Hora e data */}
+      {!compacta && (
+        <div style={{ ...pilula, padding: '0 18px', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', color: cor.texto }}>
+          <span style={{ fontSize: fonte.md, fontWeight: fonte.semi, letterSpacing: '-0.01em' }}>
+            {agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+          </span>
+          <span style={{ fontSize: fonte.xs, color: cor.textoSecundario }}>{data}</span>
+        </div>
+      )}
     </nav>
   );
 }

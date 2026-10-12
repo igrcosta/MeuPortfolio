@@ -1,37 +1,39 @@
 import { useEffect, useState } from 'react';
+import { cor, fonte, raio } from '../theme/tokens';
 
 // Mensagens que aparecem uma a uma, como um computador ligando
 const LINHAS = [
-  'IgorOS v1.0 — iniciando...',
-  'Carregando criatividade.......... OK',
-  'Carregando ambição............... OK',
-  'Montando projetos e experiências. OK',
-  'Conectando ao YouTube............ OK',
-  'Bem-vindo! 🚀'
+  'Iniciando IgorOS',
+  'Carregando criatividade',
+  'Carregando ambição',
+  'Montando projetos e experiências',
+  'Conectando ao YouTube',
+  'Tudo pronto'
 ];
 
-const TEMPO_POR_LINHA = 380; // ms entre uma linha e outra
+const TEMPO_POR_LINHA = 380; // ms entre uma etapa e outra
 
-// Tela de "boot" exibida ao abrir o OS. Chama onFim() quando termina (ou ao clicar para pular).
+// Tela de "boot" exibida ao abrir o OS (estilo Apple: logo, barra fina e uma linha de status).
+// Chama onFim() quando termina (ou ao clicar para pular).
 export default function BootScreen({ onFim }) {
-  const [linhasVisiveis, setLinhasVisiveis] = useState(0);
+  const [etapa, setEtapa] = useState(0);
   const [saindo, setSaindo] = useState(false);
 
-  // A cada TEMPO_POR_LINHA mostra mais uma linha; no fim, faz o fade-out e avisa o App
+  // A cada TEMPO_POR_LINHA avança uma etapa; no fim, faz o fade-out e avisa o App
   useEffect(() => {
-    if (linhasVisiveis < LINHAS.length) {
-      const timer = setTimeout(() => setLinhasVisiveis((n) => n + 1), TEMPO_POR_LINHA);
+    if (etapa < LINHAS.length) {
+      const timer = setTimeout(() => setEtapa((n) => n + 1), TEMPO_POR_LINHA);
       return () => clearTimeout(timer);
     }
-    const fade = setTimeout(() => setSaindo(true), 500);
-    const fim = setTimeout(onFim, 1100);
+    const fade = setTimeout(() => setSaindo(true), 450);
+    const fim = setTimeout(onFim, 1050);
     return () => {
       clearTimeout(fade);
       clearTimeout(fim);
     };
-  }, [linhasVisiveis, onFim]);
+  }, [etapa, onFim]);
 
-  const progresso = Math.round((linhasVisiveis / LINHAS.length) * 100);
+  const progresso = Math.round((etapa / LINHAS.length) * 100);
 
   return (
     <div
@@ -41,52 +43,54 @@ export default function BootScreen({ onFim }) {
         position: 'fixed',
         inset: 0,
         zIndex: 100000,
-        background: 'radial-gradient(circle at 50% 40%, #1e1b4b 0%, #0b0b12 70%)',
-        color: '#e2e8f0',
+        background: `radial-gradient(ellipse at 50% 45%, rgba(157, 0, 255, 0.22) 0%, ${cor.preto} 60%)`,
+        color: cor.texto,
+        fontFamily: fonte.familia,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '28px',
+        gap: '36px',
         padding: '24px',
         cursor: 'pointer',
         opacity: saindo ? 0 : 1,
-        transition: 'opacity 0.6s ease'
+        transform: saindo ? 'scale(1.03)' : 'none',
+        transition: 'opacity 0.6s ease, transform 0.6s ease'
       }}
     >
       {/* Logo */}
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: 'clamp(36px, 8vw, 64px)', fontWeight: 800, letterSpacing: '-1px' }}>
-          Igor<span style={{ color: '#a78bfa' }}>OS</span>
+        <div style={{
+          fontSize: 'clamp(44px, 9vw, 76px)',
+          fontWeight: 800,
+          letterSpacing: '-0.04em',
+          lineHeight: 1,
+          textShadow: '0 0 60px rgba(157, 0, 255, 0.6)'
+        }}>
+          Igor<span style={{ color: cor.roxo }}>OS</span>
         </div>
-        <div style={{ color: '#94a3b8', fontSize: '13px', letterSpacing: '4px' }}>PORTFOLIO SYSTEM</div>
+        <div style={{ color: cor.textoTerciario, fontSize: fonte.xs, letterSpacing: '0.4em', marginTop: '12px' }}>
+          PORTFOLIO SYSTEM
+        </div>
       </div>
 
-      {/* Barra de progresso */}
-      <div style={{ width: 'min(360px, 80vw)', height: '6px', background: '#1f2937', borderRadius: '3px', overflow: 'hidden' }}>
+      {/* Barra de progresso fina */}
+      <div style={{ width: 'min(220px, 60vw)', height: '4px', background: 'rgba(255,255,255,0.12)', borderRadius: raio.pilula, overflow: 'hidden' }}>
         <div style={{
           width: `${progresso}%`,
           height: '100%',
-          background: 'linear-gradient(90deg, #38bdf8, #a78bfa)',
-          transition: `width ${TEMPO_POR_LINHA}ms linear`
+          background: cor.texto,
+          borderRadius: raio.pilula,
+          transition: `width ${TEMPO_POR_LINHA}ms ease-out`
         }} />
       </div>
 
-      {/* Linhas do "terminal" */}
-      <div style={{
-        width: 'min(420px, 90vw)',
-        minHeight: '140px',
-        fontFamily: 'Consolas, ui-monospace, monospace',
-        fontSize: '12px',
-        lineHeight: 1.8,
-        color: '#4ade80'
-      }}>
-        {LINHAS.slice(0, linhasVisiveis).map((linha) => (
-          <div key={linha}>&gt; {linha}</div>
-        ))}
+      {/* Etapa atual */}
+      <div style={{ fontFamily: fonte.mono, fontSize: fonte.xs, color: cor.textoSecundario, minHeight: '16px' }}>
+        {LINHAS[Math.min(etapa, LINHAS.length - 1)]}…
       </div>
 
-      <span style={{ position: 'absolute', bottom: '20px', fontSize: '11px', color: '#475569' }}>
+      <span style={{ position: 'absolute', bottom: '24px', fontSize: fonte.xs, color: cor.textoTerciario }}>
         clique para pular
       </span>
     </div>

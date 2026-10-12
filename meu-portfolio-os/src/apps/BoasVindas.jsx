@@ -1,10 +1,12 @@
 import { boasVindas } from '../data/boasVindas';
+import { cor, raio, fonte, espaco } from '../theme/tokens';
+import { TelaApp } from '../theme/ui';
 
 // Janela que abre sozinha ao entrar no OS: o "oi" em vídeo
 export default function BoasVindas() {
   return (
-    <div style={{ background: '#0f0f0f', color: '#e2e8f0', height: '100%', overflowY: 'auto', padding: '16px' }}>
-      <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '10px', overflow: 'hidden' }}>
+    <TelaApp padding={espaco[5]}>
+      <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: raio.lg, overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
         <iframe
           src={`https://www.youtube.com/embed/${boasVindas.videoId}?rel=0`}
           title={boasVindas.titulo}
@@ -15,8 +17,10 @@ export default function BoasVindas() {
           allowFullScreen
         />
       </div>
-      <h2 style={{ margin: '14px 0 6px', fontSize: '18px' }}>{boasVindas.titulo}</h2>
-      <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: '#94a3b8' }}>{boasVindas.texto}</p>
-    </div>
+      <h2 style={{ margin: `${espaco[5]} 0 ${espaco[2]}`, fontSize: fonte.xl, fontWeight: fonte.negrito, letterSpacing: '-0.02em' }}>
+        {boasVindas.titulo}
+      </h2>
+      <p style={{ margin: 0, fontSize: fonte.md, lineHeight: 1.6, color: cor.textoSecundario }}>{boasVindas.texto}</p>
+    </TelaApp>
   );
 }

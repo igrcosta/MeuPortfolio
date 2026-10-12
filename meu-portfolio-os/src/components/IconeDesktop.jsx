@@ -1,28 +1,34 @@
+import { useState } from 'react';
 import Icone from './Icone';
+import { cor, raio, fonte, transicao } from '../theme/tokens';
 
-// Atalho na área de trabalho: ícone + nome. Abre o app ao clicar.
+// Atalho na área de trabalho: ícone-ladrilho + nome. Abre o app ao clicar.
 export default function IconeDesktop({ app, onAbrir }) {
+  const [hover, setHover] = useState(false);
+
   return (
     <button
       onClick={() => onAbrir(app.id)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       style={{
-        background: 'transparent',
+        background: hover ? 'rgba(255,255,255,0.08)' : 'transparent',
         border: 'none',
-        borderRadius: '8px',
-        padding: '8px 4px',
+        borderRadius: raio.md,
+        padding: '10px 4px 8px',
         width: '88px',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '6px',
-        color: '#fff'
+        gap: '8px',
+        color: cor.texto,
+        fontFamily: fonte.familia,
+        transition: `background ${transicao.rapida}`
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
     >
-      <Icone icone={app.icone} tamanho={40} cor={app.cor} />
-      <span style={{ fontSize: '12px', textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>{app.nome}</span>
+      <Icone icone={app.icone} tamanho={50} cor={app.cor} ladrilho />
+      <span style={{ fontSize: fonte.xs, fontWeight: fonte.medio, textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>{app.nome}</span>
     </button>
   );
 }

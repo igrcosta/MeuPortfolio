@@ -5,11 +5,12 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import Chip from '@mui/material/Chip';
 import { FaGamepad, FaGlobe, FaTerminal } from 'react-icons/fa';
 
 import { projetos } from '../data/projetos';
 import useIsMobile from '../hooks/useIsMobile';
+import { cor, fonte, espaco } from '../theme/tokens';
+import { TelaApp, TituloApp, Cartao, Etiqueta, LinkTexto } from '../theme/ui';
 
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
@@ -34,13 +35,13 @@ function CardProjeto({ projeto }) {
     <TimelineItem>
 
       {/* Lado oposto ao card: a data */}
-      <TimelineOppositeContent sx={{ color: '#a78bfa', fontWeight: 'bold', fontSize: '13px', mt: '14px' }}>
+      <TimelineOppositeContent sx={{ color: cor.roxoClaro, fontWeight: fonte.semi, fontSize: fonte.sm, mt: '14px' }}>
         {formatarData(projeto.data)}
       </TimelineOppositeContent>
 
       {/* Meio: bolinha + linha */}
       <TimelineSeparator>
-        <TimelineDot color="primary" variant="outlined">
+        <TimelineDot sx={{ background: cor.roxoSuave, border: `1px solid ${cor.roxoBorda}`, color: cor.roxoClaro, boxShadow: `0 0 18px ${cor.roxoSuave}` }}>
           <IconeTipo size={14} />
         </TimelineDot>
         <TimelineConnector />
@@ -48,12 +49,7 @@ function CardProjeto({ projeto }) {
 
       {/* Card do projeto */}
       <TimelineContent sx={{ textAlign: 'left', pb: 4 }}>
-        <div style={{
-          background: '#1f2937',
-          border: '1px solid #374151',
-          borderRadius: '12px',
-          overflow: 'hidden'
-        }}>
+        <Cartao>
 
           {/* Mídia do projeto: vídeo do YouTube > imagem > capa provisória */}
           {projeto.video ? (
@@ -72,43 +68,38 @@ function CardProjeto({ projeto }) {
             <img src={projeto.imagem} alt={projeto.nome} style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
           ) : (
             <div style={{
-              height: '80px',
-              background: 'linear-gradient(135deg, #312e81, #1e293b)',
+              height: '84px',
+              background: `radial-gradient(ellipse at 30% 0%, ${cor.roxoBrilho}, transparent 70%), ${cor.pretoRoxo}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#c4b5fd',
-              fontSize: '18px',
-              fontWeight: 'bold'
+              color: cor.roxoClaro,
+              fontSize: fonte.lg,
+              fontWeight: fonte.negrito,
+              letterSpacing: '-0.01em'
             }}>
               {projeto.nome}
             </div>
           )}
 
-          <div style={{ padding: '12px 14px' }}>
-            <h3 style={{ margin: '0 0 6px', fontSize: '16px', color: '#e2e8f0' }}>{projeto.nome}</h3>
-            <p style={{ margin: '0 0 10px', fontSize: '13px', lineHeight: 1.6, color: '#cbd5e1' }}>{projeto.descricao}</p>
+          <div style={{ padding: `${espaco[3]} ${espaco[4]} ${espaco[4]}` }}>
+            <h3 style={{ margin: `0 0 ${espaco[1]}`, fontSize: fonte.md, fontWeight: fonte.semi }}>{projeto.nome}</h3>
+            <p style={{ margin: `0 0 ${espaco[3]}`, fontSize: fonte.sm, lineHeight: 1.6, color: cor.textoSecundario }}>{projeto.descricao}</p>
 
-            {/* Tecnologias em "chips" (componente Chip da MUI) */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
+            {/* Tecnologias em "chips" */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: espaco[3] }}>
               {projeto.tecnologias.map((tec) => (
-                <Chip key={tec} label={tec} size="small" color="primary" variant="outlined" />
+                <Etiqueta key={tec}>{tec}</Etiqueta>
               ))}
             </div>
 
             {/* Links */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', fontSize: '13px' }}>
-              <a href={projeto.github} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>
-                Ver no GitHub
-              </a>
-              {projeto.link && (
-                <a href={projeto.link} target="_blank" rel="noopener noreferrer" style={{ color: '#4ade80' }}>
-                  {projeto.textoLink}
-                </a>
-              )}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: espaco[4], fontSize: fonte.sm }}>
+              <LinkTexto href={projeto.github}>Ver no GitHub →</LinkTexto>
+              {projeto.link && <LinkTexto href={projeto.link} style={{ color: cor.verde }}>{projeto.textoLink} →</LinkTexto>}
             </div>
           </div>
-        </div>
+        </Cartao>
       </TimelineContent>
     </TimelineItem>
   );
@@ -124,11 +115,10 @@ export default function Projetos() {
   const projetosOrdenados = [...projetos].sort((a, b) => a.data.localeCompare(b.data));
 
   return (
-    <div style={{ background: '#111827', color: '#e2e8f0', height: '100%', overflowY: 'auto', padding: '24px 12px' }}>
-      <h2 style={{ margin: '0 0 4px', textAlign: 'center' }}>Linha do tempo</h2>
-      <p style={{ margin: '0 0 16px', color: '#94a3b8', fontSize: '14px', textAlign: 'center' }}>
-        Do meu primeiro site em HTML até este sistema operacional.
-      </p>
+    <TelaApp padding={`${espaco[6]} ${espaco[3]}`}>
+      <div style={{ padding: `0 ${espaco[3]}` }}>
+        <TituloApp titulo="Linha do tempo" subtitulo="Do meu primeiro site em HTML até este sistema operacional." />
+      </div>
 
       {/* PC: cards alternando esquerda/direita. Celular: todos à direita, data estreita à esquerda */}
       <Timeline
@@ -140,6 +130,6 @@ export default function Projetos() {
           <CardProjeto key={projeto.id} projeto={projeto} />
         ))}
       </Timeline>
-    </div>
+    </TelaApp>
   );
 }

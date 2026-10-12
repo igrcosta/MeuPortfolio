@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { SiWakatime } from 'react-icons/si';
+import { cor, vidro, raio, fonte } from '../theme/tokens';
+import { TituloApp, TituloSecao } from '../theme/ui';
 
-const CORES = ['#a78bfa', '#38bdf8', '#4ade80', '#fbbf24', '#f472b6', '#fb923c'];
+const CORES = [cor.roxo, cor.roxoClaro, cor.roxoEscuro, cor.indigo, cor.azul, cor.verde];
 
 // Estatísticas de código dos últimos 7 dias (WakaTime), vindas da nossa função serverless /api/wakatime
 export default function WakaTime() {
@@ -18,12 +20,12 @@ export default function WakaTime() {
       .catch(() => setErro(true));
   }, []);
 
-  const estilo = { background: '#0d1117', color: '#e2e8f0', height: '100%', overflowY: 'auto', padding: '20px' };
+  const estilo = { color: cor.texto, fontFamily: fonte.familia, height: '100%', overflowY: 'auto', padding: '24px' };
 
   if (erro) {
     return (
       <div style={estilo}>
-        <p style={{ color: '#94a3b8' }}>
+        <p style={{ color: cor.textoSecundario }}>
           As estatísticas do WakaTime ficam disponíveis no site publicado (elas vêm de uma função serverless da Vercel).
         </p>
       </div>
@@ -33,39 +35,36 @@ export default function WakaTime() {
 
   return (
     <div style={estilo}>
-      <h2 style={{ margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <SiWakatime /> Tempo programando
-      </h2>
-      <p style={{ margin: '0 0 18px', color: '#94a3b8', fontSize: '13px' }}>Últimos 7 dias, medido automaticamente pelo WakaTime no meu editor.</p>
+      <TituloApp Icone={SiWakatime} titulo="Tempo programando" subtitulo="Últimos 7 dias, medido automaticamente pelo WakaTime no meu editor." />
 
       {dados.calculando ? (
-        <p style={{ color: '#94a3b8' }}>O WakaTime ainda está calculando as estatísticas. Volte daqui a pouco!</p>
+        <p style={{ color: cor.textoSecundario }}>O WakaTime ainda está calculando as estatísticas. Volte daqui a pouco!</p>
       ) : (
         <>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' }}>
             {[['Total na semana', dados.total], ['Média por dia', dados.mediaDiaria]].map(([rotulo, valor]) => (
-              <div key={rotulo} style={{ flex: '1 1 150px', background: '#1f2937', border: '1px solid #374151', borderRadius: '10px', padding: '12px' }}>
-                <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{valor}</div>
-                <div style={{ fontSize: '11px', color: '#94a3b8' }}>{rotulo}</div>
+              <div key={rotulo} style={{ flex: '1 1 150px', ...vidro.cartao, borderRadius: raio.lg, padding: '16px' }}>
+                <div style={{ fontSize: fonte.xl, fontWeight: fonte.negrito, letterSpacing: '-0.02em' }}>{valor}</div>
+                <div style={{ fontSize: fonte.xs, color: cor.textoSecundario }}>{rotulo}</div>
               </div>
             ))}
           </div>
 
-          <h4 style={{ margin: '0 0 10px', color: '#94a3b8' }}>Linguagens</h4>
+          <TituloSecao>Linguagens</TituloSecao>
           {dados.linguagens.map((lang, i) => (
             <div key={lang.nome} style={{ marginBottom: '10px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: fonte.sm, marginBottom: '6px' }}>
                 <span>{lang.nome}</span>
-                <span style={{ color: '#94a3b8' }}>{lang.texto}</span>
+                <span style={{ color: cor.textoSecundario }}>{lang.texto}</span>
               </div>
-              <div style={{ height: '8px', background: '#1f2937', borderRadius: '4px', overflow: 'hidden' }}>
+              <div style={{ height: '8px', background: cor.superficieHover, borderRadius: raio.pilula, overflow: 'hidden' }}>
                 <div style={{ width: `${lang.porcentagem}%`, height: '100%', background: CORES[i % CORES.length] }} />
               </div>
             </div>
           ))}
 
           {dados.editores.length > 0 && (
-            <p style={{ marginTop: '18px', fontSize: '12px', color: '#64748b' }}>
+            <p style={{ marginTop: '18px', fontSize: fonte.xs, color: cor.textoTerciario }}>
               Editores: {dados.editores.map((e) => e.nome).join(', ')}
             </p>
           )}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaGithub, FaStar, FaBook, FaUsers } from 'react-icons/fa';
+import { cor, vidro, raio, fonte } from '../theme/tokens';
+import { TituloSecao } from '../theme/ui';
 
 const USUARIO = 'igrcosta';
 const CHAVE_CACHE = 'githubStats';
@@ -55,14 +57,14 @@ async function buscarDados() {
   return dados;
 }
 
-const CORES = ['#a78bfa', '#38bdf8', '#4ade80', '#fbbf24', '#f472b6', '#fb923c'];
+const CORES = [cor.roxo, cor.roxoClaro, cor.roxoEscuro, cor.indigo, cor.azul, cor.verde];
 
 function Numero({ Icone, valor, rotulo }) {
   return (
-    <div style={{ flex: '1 1 110px', background: '#1f2937', border: '1px solid #374151', borderRadius: '10px', padding: '12px', textAlign: 'center' }}>
-      <Icone color="#a78bfa" />
-      <div style={{ fontSize: '22px', fontWeight: 'bold', margin: '4px 0 0' }}>{valor}</div>
-      <div style={{ fontSize: '11px', color: '#94a3b8' }}>{rotulo}</div>
+    <div style={{ flex: '1 1 110px', ...vidro.cartao, borderRadius: raio.lg, padding: '16px', textAlign: 'center' }}>
+      <Icone color={cor.roxoClaro} />
+      <div style={{ fontSize: fonte.xl, fontWeight: fonte.negrito, letterSpacing: '-0.02em', margin: '4px 0 0' }}>{valor}</div>
+      <div style={{ fontSize: '11px', color: cor.textoSecundario }}>{rotulo}</div>
     </div>
   );
 }
@@ -76,13 +78,13 @@ export default function GitHubStats() {
     buscarDados().then(setDados).catch(() => setErro(true));
   }, []);
 
-  const estilo = { background: '#0d1117', color: '#e2e8f0', height: '100%', overflowY: 'auto', padding: '20px' };
+  const estilo = { color: cor.texto, fontFamily: fonte.familia, height: '100%', overflowY: 'auto', padding: '24px' };
 
   if (erro) {
     return (
       <div style={estilo}>
         <p>Não consegui falar com o GitHub agora 😕</p>
-        <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8' }}>
+        <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: cor.roxoClaro }}>
           Ver meu perfil direto no GitHub
         </a>
       </div>
@@ -102,7 +104,7 @@ export default function GitHubStats() {
         <img src={dados.avatar} alt="" style={{ width: '56px', height: '56px', borderRadius: '50%' }} />
         <div>
           <div style={{ fontWeight: 'bold', fontSize: '17px' }}>{dados.nome}</div>
-          <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: cor.roxoClaro, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <FaGithub /> github.com/{USUARIO}
           </a>
         </div>
@@ -116,7 +118,7 @@ export default function GitHubStats() {
       </div>
 
       {/* Barra de linguagens */}
-      <h4 style={{ margin: '0 0 8px', color: '#94a3b8' }}>Linguagens mais usadas</h4>
+      <TituloSecao>Linguagens mais usadas</TituloSecao>
       <div style={{ display: 'flex', height: '10px', borderRadius: '5px', overflow: 'hidden', marginBottom: '8px' }}>
         {dados.linguagens.map(([nome, qtd], i) => (
           <div key={nome} style={{ width: `${(qtd / totalLinguagens) * 100}%`, background: CORES[i] }} />
@@ -126,26 +128,26 @@ export default function GitHubStats() {
         {dados.linguagens.map(([nome, qtd], i) => (
           <span key={nome} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: CORES[i] }} />
-            {nome} <span style={{ color: '#64748b' }}>({qtd})</span>
+            {nome} <span style={{ color: cor.textoTerciario }}>({qtd})</span>
           </span>
         ))}
       </div>
 
       {/* Repositórios recentes */}
-      <h4 style={{ margin: '0 0 8px', color: '#94a3b8' }}>Mexi recentemente em</h4>
+      <TituloSecao>Mexi recentemente em</TituloSecao>
       {dados.recentes.map((repo) => (
         <a key={repo.nome} href={repo.url} target="_blank" rel="noopener noreferrer" style={{
           display: 'flex',
           justifyContent: 'space-between',
           gap: '10px',
           padding: '8px 10px',
-          borderBottom: '1px solid #1f2937',
-          color: '#e2e8f0',
+          borderBottom: `1px solid ${cor.divisoria}`,
+          color: cor.texto,
           textDecoration: 'none',
           fontSize: '13px'
         }}>
           <span>{repo.nome}</span>
-          <span style={{ color: '#64748b', whiteSpace: 'nowrap' }}>
+          <span style={{ color: cor.textoTerciario, whiteSpace: 'nowrap' }}>
             {repo.linguagem || '—'} · {new Date(repo.atualizado).toLocaleDateString('pt-BR')}
           </span>
         </a>

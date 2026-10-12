@@ -8,6 +8,8 @@ import IconeDesktop from './components/IconeDesktop';
 import Taskbar from './components/Taskbar';
 import BootScreen from './components/BootScreen';
 import Widgets from './components/Widgets';
+import Wallpaper from './components/Wallpaper';
+import { cor, fonte, ALTURA_DOCK } from './theme/tokens';
 import useIsMobile from './hooks/useIsMobile';
 
 // Apps
@@ -22,28 +24,26 @@ import GitHubStats from './apps/GitHubStats';
 import WakaTime from './apps/WakaTime';
 import BoasVindas from './apps/BoasVindas';
 
-// Altura da Taskbar (a área de trabalho ocupa o resto da tela)
-const ALTURA_TASKBAR = 56;
 
 // LISTA DE APPS DO OS
 // Para criar um app novo, basta adicionar um item aqui:
 //   id        -> identificador único
 //   nome      -> aparece no ícone, na Taskbar e no título da janela
 //   icone     -> caminho de imagem em public/ OU ícone do react-icons
-//   cor       -> cor do ícone (só para react-icons)
+//   cor       -> cor do ladrilho do ícone (paleta: roxo da marca + cores de sistema da Apple)
 //   tamanho   -> tamanho inicial da janela no PC
 //   conteudo  -> o que aparece dentro da janela
 const apps = [
-  { id: 'boasvindas', nome: 'Boas-vindas', icone: FaPlayCircle, cor: '#f472b6', tamanho: { width: 760, height: 560 }, conteudo: <BoasVindas /> },
-  { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: '#38bdf8', tamanho: { width: 700, height: 520 }, conteudo: <SobreMim /> },
-  { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: '#a78bfa', tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
-  { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: '#fbbf24', tamanho: { width: 700, height: 520 }, conteudo: <Experiencias /> },
-  { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: '#4ade80', tamanho: { width: 600, height: 560 }, conteudo: <Contato /> },
-  { id: 'youtube', nome: 'YouTube', icone: FaYoutube, cor: '#ff0033', tamanho: { width: 1000, height: 680 }, conteudo: <YoutubeApp /> },
-  { id: 'certificados', nome: 'Certificados', icone: FaCertificate, cor: '#fb923c', tamanho: { width: 620, height: 440 }, conteudo: <Certificados /> },
-  { id: 'jogos', nome: 'Jogos', icone: FaGamepad, cor: '#f472b6', tamanho: { width: 820, height: 560 }, conteudo: <Jogos /> },
-  { id: 'github', nome: 'GitHub', icone: FaGithub, cor: '#e2e8f0', tamanho: { width: 560, height: 600 }, conteudo: <GitHubStats /> },
-  { id: 'wakatime', nome: 'WakaTime', icone: SiWakatime, cor: '#e2e8f0', tamanho: { width: 520, height: 560 }, conteudo: <WakaTime /> }
+  { id: 'boasvindas', nome: 'Boas-vindas', icone: FaPlayCircle, cor: cor.roxo, tamanho: { width: 760, height: 560 }, conteudo: <BoasVindas /> },
+  { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: cor.indigo, tamanho: { width: 700, height: 520 }, conteudo: <SobreMim /> },
+  { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: cor.roxoEscuro, tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
+  { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: cor.laranja, tamanho: { width: 700, height: 520 }, conteudo: <Experiencias /> },
+  { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: cor.verde, tamanho: { width: 600, height: 560 }, conteudo: <Contato /> },
+  { id: 'youtube', nome: 'YouTube', icone: FaYoutube, cor: cor.vermelho, tamanho: { width: 1000, height: 680 }, conteudo: <YoutubeApp /> },
+  { id: 'certificados', nome: 'Certificados', icone: FaCertificate, cor: cor.ambar, tamanho: { width: 620, height: 440 }, conteudo: <Certificados /> },
+  { id: 'jogos', nome: 'Jogos', icone: FaGamepad, cor: cor.indigo, tamanho: { width: 820, height: 560 }, conteudo: <Jogos /> },
+  { id: 'github', nome: 'GitHub', icone: FaGithub, cor: cor.grafite, tamanho: { width: 560, height: 600 }, conteudo: <GitHubStats /> },
+  { id: 'wakatime', nome: 'WakaTime', icone: SiWakatime, cor: cor.azul, tamanho: { width: 520, height: 560 }, conteudo: <WakaTime /> }
 ];
 
 export default function App() {
@@ -109,17 +109,11 @@ export default function App() {
   };
 
   return (
-    <div style={{
-      width: '100%',
-      height: '100%',
-      background: `
-        radial-gradient(ellipse at 15% 10%, rgba(124, 58, 237, 0.35) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 90%, rgba(56, 189, 248, 0.25) 0%, transparent 50%),
-        linear-gradient(160deg, #1a1b2e 0%, #11121c 100%)`
-    }}>
+    <div style={{ width: '100%', height: '100%', fontFamily: fonte.familia, color: cor.texto }}>
+      <Wallpaper />
 
-      {/* ÁREA DE TRABALHO: tudo menos a Taskbar (as janelas ficam presas aqui dentro) */}
-      <div style={{ position: 'relative', width: '100%', height: `calc(100% - ${ALTURA_TASKBAR}px)`, overflowY: isMobile ? 'auto' : 'hidden' }}>
+      {/* ÁREA DE TRABALHO: tudo menos o dock (as janelas ficam presas aqui dentro) */}
+      <div style={{ position: 'relative', zIndex: 1, width: '100%', height: `calc(100% - ${ALTURA_DOCK}px)`, overflowY: isMobile ? 'auto' : 'hidden' }}>
 
         {/* Marca d'água no fundo */}
         {!isMobile && (
@@ -130,7 +124,7 @@ export default function App() {
             fontSize: '64px',
             fontWeight: 800,
             letterSpacing: '-2px',
-            color: 'rgba(255,255,255,0.04)',
+            color: 'rgba(255,255,255,0.035)',
             userSelect: 'none',
             pointerEvents: 'none'
           }}>

@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 import { FaMinus, FaRegSquare, FaRegClone, FaTimes } from 'react-icons/fa';
 import Icone from './Icone';
-
-// Altura da Taskbar, para a janela não ficar por baixo dela
-const ALTURA_TASKBAR = 56;
+import { cor, vidro, raio, sombra, fonte, transicao, ALTURA_DOCK } from '../theme/tokens';
 
 // Botão da barra de título (minimizar / maximizar / fechar)
 function BotaoJanela({ onClick, titulo, perigo = false, children }) {
@@ -13,20 +11,22 @@ function BotaoJanela({ onClick, titulo, perigo = false, children }) {
         <button
             onClick={onClick}
             title={titulo}
+            aria-label={titulo}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             style={{
-                background: hover ? (perigo ? '#e81123' : 'rgba(255,255,255,0.1)') : 'transparent',
-                color: '#e2e8f0',
+                background: hover ? (perigo ? cor.vermelho : cor.superficieHover) : 'transparent',
+                color: hover ? '#fff' : cor.textoSecundario,
                 border: 'none',
-                width: '36px',
-                height: '30px',
-                borderRadius: '6px',
+                width: '34px',
+                height: '28px',
+                borderRadius: raio.sm,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '11px'
+                fontSize: '11px',
+                transition: `background ${transicao.rapida}, color ${transicao.rapida}`
             }}
         >
             {children}
@@ -37,13 +37,13 @@ function BotaoJanela({ onClick, titulo, perigo = false, children }) {
 export default function Janela({
     titulo,
     icone,                                    // ícone do app, aparece na barra de título
-    cor,                                      // cor do ícone (react-icons)
+    cor: corApp,                              // cor do app (gradiente do ícone)
     onClose,
     onMinimize,
     children,
     zIndex,                                   // quem tem o maior fica na frente
-    ativa = false,                            // true = janela da frente (barra destacada)
-    minimizada = false,                       // true = escondida (continua na Taskbar)
+    ativa = false,                            // true = janela da frente (brilho roxo)
+    minimizada = false,                       // true = escondida (continua no dock)
     onFocus,                                  // chamado ao clicar na janela (traz pra frente)
     isMobile = false,                         // no celular: tela cheia, sem arrastar
     tamanho = { width: 800, height: 600 },    // tamanho inicial no PC
@@ -54,7 +54,7 @@ export default function Janela({
     const [pos, setPos] = useState(posicao);
     const [tam, setTam] = useState({
         width: Math.min(tamanho.width, window.innerWidth - 40),
-        height: Math.min(tamanho.height, window.innerHeight - ALTURA_TASKBAR - posicao.y - 10)
+        height: Math.min(tamanho.height, window.innerHeight - ALTURA_DOCK - posicao.y - 10)
     });
     const [maximizada, setMaximizada] = useState(false);
 
@@ -62,33 +62,42 @@ export default function Janela({
 
     const moldura = (
         <div style={{
-            background: '#0f0f0f',
-            color: '#fff',
+            ...vidro.janela,
             height: '100%',
-            borderRadius: telaCheia ? 0 : '10px',
+            borderRadius: telaCheia ? 0 : raio.xl,
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
-            boxShadow: ativa ? '0 20px 50px rgba(0,0,0,0.6)' : '0 8px 20px rgba(0,0,0,0.4)',
-            border: `1px solid ${ativa ? 'rgba(167,139,250,0.45)' : '#272727'}`
+            boxShadow: `${vidro.janela.boxShadow}, ${ativa ? sombra.janelaAtiva : sombra.janela}`,
+            borderColor: ativa ? cor.roxoBorda : cor.borda,
+            color: cor.texto,
+            fontFamily: fonte.familia,
+            transition: `border-color ${transicao.media}, box-shadow ${transicao.media}`
         }}>
             {/* className usado pelo Rnd: só dá pra arrastar pela barra de título. Duplo clique maximiza. */}
             <div
                 className="janela-barra"
                 onDoubleClick={() => !isMobile && setMaximizada(!maximizada)}
                 style={{
-                    background: ativa ? '#1f1f2e' : '#18181b',
-                    padding: '4px 4px 4px 12px',
+                    padding: '8px 8px 8px 14px',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    borderBottom: '1px solid #2a2a35',
-                    cursor: telaCheia ? 'default' : 'move',
+                    borderBottom: `1px solid ${cor.divisoria}`,
+                    background: 'rgba(255,255,255,0.03)',
+                    cursor: telaCheia ? 'default' : 'grab',
                     userSelect: 'none'
                 }}
             >
-                <span style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 600, color: ativa ? '#f1f5f9' : '#94a3b8' }}>
-                    {icone && <Icone icone={icone} tamanho={16} cor={cor} />}
+                <span style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    fontSize: fonte.sm,
+                    fontWeight: fonte.semi,
+                    color: ativa ? cor.texto : cor.textoSecundario
+                }}>
+                    {icone && <Icone icone={icone} tamanho={20} cor={corApp} ladrilho />}
                     {titulo}
                 </span>
 
@@ -104,13 +113,13 @@ export default function Janela({
             </div>
 
             {/* Conteúdo do app */}
-            <div style={{ flex: 1, overflow: 'hidden' }}>
+            <div style={{ flex: 1, overflow: 'hidden', minHeight: 0 }}>
                 {children}
             </div>
         </div>
     );
 
-    // CELULAR: janela ocupa a tela toda, acima da Taskbar
+    // CELULAR: janela ocupa a tela toda, acima do dock
     if (isMobile) {
         return (
             <div
@@ -120,7 +129,7 @@ export default function Janela({
                     top: 0,
                     left: 0,
                     right: 0,
-                    bottom: ALTURA_TASKBAR,
+                    bottom: ALTURA_DOCK,
                     zIndex,
                     display: minimizada ? 'none' : 'block'
                 }}

@@ -1,4 +1,4 @@
-/* Reset global do Web OS: o desktop ocupa a tela inteira, sem rolagem */
+/* Reset global do IgorOS: o desktop ocupa a tela inteira, sem rolagem */
 *,
 *::before,
 *::after {
@@ -15,8 +15,42 @@ body,
 }
 
 body {
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  background: #383f4e;
-  color: #e2e8f0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  background: #05030A;
+  color: #F5F2FA;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01';
+}
+
+/* Seleção de texto e barras de rolagem no tom roxo do sistema */
+::selection {
+  background: rgba(157, 0, 255, 0.45);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+* {
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  scrollbar-width: thin;
+}
+
+/* Foco visível para quem navega pelo teclado */
+:focus-visible {
+  outline: 2px solid #B04BFF;
+  outline-offset: 2px;
 }

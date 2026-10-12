@@ -5,6 +5,9 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { redes } from '../data/contato';
+import Icone from '../components/Icone';
+import { cor, fonte, espaco } from '../theme/tokens';
+import { TelaApp, TituloApp, TituloSecao } from '../theme/ui';
 
 // Chaves do EmailJS: vêm do arquivo .env (veja o .env.example).
 // São chaves PÚBLICAS, feitas para ficar no navegador.
@@ -65,17 +68,14 @@ export default function Contato() {
   };
 
   return (
-    <div style={{ background: '#111827', color: '#e2e8f0', height: '100%', overflowY: 'auto', padding: '24px' }}>
-      <h2 style={{ margin: '0 0 4px' }}>Vamos conversar?</h2>
-      <p style={{ margin: '0 0 20px', color: '#94a3b8', fontSize: '14px' }}>
-        Me chame por qualquer canal abaixo ou mande uma mensagem pelo formulário.
-      </p>
+    <TelaApp>
+      <TituloApp titulo="Vamos conversar?" subtitulo="Me chame por qualquer canal abaixo ou mande uma mensagem pelo formulário." />
 
       {/* Ícones clicáveis (itens sem link ficam de fora) */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '28px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: espaco[3] }}>
         {redes
           .filter((rede) => rede.link)
-          .map(({ nome, Icone, cor, link }) => (
+          .map(({ nome, Icone: IconeRede, cor: corRede, link }) => (
             <a
               key={nome}
               href={link}
@@ -86,25 +86,23 @@ export default function Contato() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '6px',
-                width: '76px',
-                padding: '12px 4px',
-                background: '#1f2937',
-                border: '1px solid #374151',
-                borderRadius: '12px',
-                color: '#e2e8f0',
+                gap: espaco[2],
+                width: '72px',
+                color: cor.textoSecundario,
                 textDecoration: 'none',
-                fontSize: '11px'
+                fontSize: fonte.xs,
+                fontWeight: fonte.medio
               }}
             >
-              <Icone size={26} color={cor} />
+              <Icone icone={IconeRede} tamanho={52} cor={corRede} ladrilho />
               {nome}
             </a>
           ))}
       </div>
 
-      {/* Formulário (componentes da Material UI) */}
-      <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      {/* Formulário (componentes da Material UI, com o tema do IgorOS) */}
+      <TituloSecao>Mande uma mensagem</TituloSecao>
+      <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: espaco[3] }}>
         <TextField
           label="Nome"
           name="nome"
@@ -145,7 +143,7 @@ export default function Contato() {
         autoHideDuration={5000}
         onClose={() => setAviso(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        sx={{ bottom: '64px !important' }}
+        sx={{ bottom: '96px !important' }}
       >
         {aviso ? (
           <Alert severity={aviso.tipo} variant="filled" onClose={() => setAviso(null)}>
@@ -153,6 +151,6 @@ export default function Contato() {
           </Alert>
         ) : undefined}
       </Snackbar>
-    </div>
+    </TelaApp>
   );
 }

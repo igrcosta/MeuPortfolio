@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 const USUARIO = import.meta.env.VITE_LASTFM_USER;
 const CHAVE = import.meta.env.VITE_LASTFM_API_KEY;
 const INTERVALO = 30000; // consulta de novo a cada 30 segundos
+const CAPA_PADRAO_LASTFM = '2a96cbd8b46e442fc41c2b86b821562f'; // imagem de "sem capa" do Last.fm
 
 // Última música tocada no Spotify (via scrobbles do Last.fm).
 // Devolve { disponivel, musica } — musica = { nome, artista, capa, link, tocandoAgora } ou null.
@@ -19,10 +20,15 @@ export default function useTocandoAgora() {
         const dados = await resposta.json();
         const faixa = dados?.recenttracks?.track?.[0];
         if (!faixa) return;
+
+        // Sem capa, o Last.fm manda uma estrela genérica: nesse caso deixamos vazio (o widget mostra o ícone do Spotify)
+        const urlCapa = faixa.image?.find((img) => img.size === 'large')?.['#text'] || '';
+        const capa = urlCapa.includes(CAPA_PADRAO_LASTFM) ? '' : urlCapa;
+
         setMusica({
           nome: faixa.name,
           artista: faixa.artist?.['#text'],
-          capa: faixa.image?.find((img) => img.size === 'medium')?.['#text'] || '',
+          capa,
           link: faixa.url,
           tocandoAgora: faixa['@attr']?.nowplaying === 'true'
         });

@@ -74,7 +74,7 @@
 - 🗂️ **Projetos em linha do tempo:** do mais antigo ao mais recente, com descrição, tecnologias, link do GitHub e imagem/trailer, usando o `Timeline` da Material UI.
 - 💼 **Experiências:** experiência profissional, formação e conquistas, com empresa/instituição, cargo, período e descrição.
 - ✉️ **Contato:** ícones clicáveis (e-mail, WhatsApp, YouTube, GitHub, itch.io) e formulário com **validação** e **envio por e-mail** (EmailJS).
-- 📺 **YouTube:** meu canal dentro do OS — player, lista de vídeos, botão de inscrição e **curtidas reais salvas no Supabase** (uma por visitante).
+- 📺 **YouTube:** meu canal dentro do OS — player, lista de vídeos, botão de inscrição, **curtidas** (uma por visitante) e **comentários com apelido em tempo real**, tudo salvo no Supabase.
 - ⌨️ **WakaTime:** tempo programando nos últimos 7 dias e linguagens mais usadas, buscados por uma **função serverless** (`/api/wakatime`) que protege a chave secreta.
 - 🎮 **Jogos:** launcher com os jogos que desenvolvi, com trailer e botão para jogar no navegador (itch.io). Reaproveita os dados da timeline, filtrando `tipo: 'jogo'`.
 - 📜 **Certificados:** galeria de certificados com prévia e abertura do PDF.
@@ -91,7 +91,8 @@
 * **Linguagem:** JavaScript (ES6+), JSX
 * **Build Tool:** Vite 8
 * **Componentes de UI:** Material UI 9 (`@mui/material`, `@mui/lab` — Timeline, Chip, TextField, Button, Snackbar)
-* **Estilização:** estilos inline em objetos JS + tema escuro da Material UI (`ThemeProvider`)
+* **Estilização:** design system próprio (`src/theme/`): tokens + componentes base, aplicados via estilos inline; tema da Material UI ligado aos mesmos tokens
+* **Tipografia:** Inter e JetBrains Mono (Google Fonts)
 * **Janelas:** `react-rnd` (arrastar e redimensionar)
 * **Ícones:** `react-icons`
 * **Gerenciamento de estado:** `useState` / `useEffect` / `useCallback` do React (estado local, sem bibliotecas externas)
@@ -156,6 +157,15 @@ flowchart TD
     FN -->|chave secreta| WK[WakaTime]
 ```
 
+### 🎨 Design System
+
+A identidade visual foi construída como um **design system** em [`src/theme/`](meu-portfolio-os/src/theme/), inspirado no macOS/visionOS:
+
+- **Tokens** (`tokens.js`): paleta **preto + roxo `#9D00FF`** com as cores de sistema da Apple, níveis de **vidro** (glassmorphism com `backdrop-filter`), raios, sombras, escala tipográfica (Inter), espaçamentos em múltiplos de 4 e transições. Nenhum componente escreve cor "na mão".
+- **Componentes base** (`ui.jsx`): `TelaApp`, `TituloApp`, `TituloSecao`, `Cartao`, `Etiqueta`, `Botao`, `LinkTexto`, reaproveitados por todos os apps.
+- **Ícones em ladrilho:** cada app tem um ícone quadrado arredondado com gradiente, como os apps da Apple.
+- **Resultado:** de **53 cores diferentes escritas à mão em 183 lugares** para uma única fonte de verdade.
+
 **Decisões e trade-offs:**
 - **Estilos inline** deixam cada componente com o próprio visual; o custo é alguma repetição. A **Material UI** foi usada onde ela agrega mais (timeline e formulário com validação).
 - **Back-end enxuto:** em vez de um servidor próprio, o projeto usa **serviços gerenciados** (Supabase, EmailJS) e **uma função serverless** só onde há segredo a proteger (WakaTime). Chaves `VITE_*` são públicas por design; a chave do WakaTime fica apenas no servidor.
@@ -192,7 +202,7 @@ Crie o arquivo **`meu-portfolio-os/.env`** copiando o exemplo (`meu-portfolio-os
 
 #### 💾 Banco de dados (Supabase)
 
-No painel do Supabase, abra **SQL Editor → New query**, cole o conteúdo de [`meu-portfolio-os/supabase/schema.sql`](meu-portfolio-os/supabase/schema.sql) e clique em **Run**. O script cria as tabelas `curtidas` e `visitas` e as funções usadas pelo site.
+No painel do Supabase, abra **SQL Editor → New query**, cole o conteúdo de [`meu-portfolio-os/supabase/schema.sql`](meu-portfolio-os/supabase/schema.sql) e clique em **Run**. O script cria as tabelas `curtidas`, `comentarios` e `visitas` e as funções usadas pelo site (pode ser executado de novo sem problemas).
 
 ### 📦 Instalação de Dependências
 
@@ -258,7 +268,8 @@ O site é hospedado na **Vercel**, conectada a este repositório:
         ├── components/            # 🧱 Peças do OS: Janela, Taskbar, IconeDesktop, Icone, BootScreen, Widgets
         ├── apps/                  # 🪟 Um componente por app: SobreMim, Projetos, Experiencias, Contato...
         ├── data/                  # 🗃️ Conteúdo: sobre, projetos, experiencias, contato, certificados...
-        ├── hooks/                 # 🎣 useIsMobile, useCurtidas, useVisitas, useTocandoAgora
+        ├── theme/                 # 🎨 Design system: tokens.js (cores, vidro, raios...) e ui.jsx (componentes base)
+        ├── hooks/                 # 🎣 useIsMobile, useCurtidas, useComentarios, useVisitas, useTocandoAgora
         └── lib/                   # 🔌 supabase.js (cliente do banco + id anônimo do visitante)
 ```
 
