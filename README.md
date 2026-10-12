@@ -67,22 +67,19 @@
 
 ## ✨ Funcionalidades Principais
 
-- 🖥️ **Desktop com janelas:** janelas arrastáveis e redimensionáveis (`react-rnd`), com foco (a janela clicada vem para a frente) e barra de tarefas com relógio.
+- 🖥️ **Desktop com janelas:** janelas arrastáveis e redimensionáveis (`react-rnd`) que podem ser **minimizadas, maximizadas** (botão ou duplo clique) e focadas (a janela clicada vem para a frente). Barra de tarefas no estilo Windows 11 com indicador de apps abertos.
+- 🧩 **Widgets na área de trabalho:** relógio, **"tocando agora" no Spotify** (via Last.fm) e **contador de visitas** (Supabase).
 - 🚀 **Tela de boot + boas-vindas:** animação de inicialização (exibida uma vez por visita) e janela com vídeo de boas-vindas que abre sozinha.
 - 👤 **Sobre Mim bilíngue (PT/EN):** apresentação, objetivos, extras com links e habilidades, com troca de idioma em um clique.
 - 🗂️ **Projetos em linha do tempo:** do mais antigo ao mais recente, com descrição, tecnologias, link do GitHub e imagem/trailer, usando o `Timeline` da Material UI.
 - 💼 **Experiências:** experiência profissional, formação e conquistas, com empresa/instituição, cargo, período e descrição.
 - ✉️ **Contato:** ícones clicáveis (e-mail, WhatsApp, YouTube, GitHub, itch.io) e formulário com **validação** e **envio por e-mail** (EmailJS).
+- 📺 **YouTube:** meu canal dentro do OS — player, lista de vídeos, botão de inscrição e **curtidas reais salvas no Supabase** (uma por visitante).
+- ⌨️ **WakaTime:** tempo programando nos últimos 7 dias e linguagens mais usadas, buscados por uma **função serverless** (`/api/wakatime`) que protege a chave secreta.
 - 🎮 **Jogos:** launcher com os jogos que desenvolvi, com trailer e botão para jogar no navegador (itch.io). Reaproveita os dados da timeline, filtrando `tipo: 'jogo'`.
 - 📜 **Certificados:** galeria de certificados com prévia e abertura do PDF.
 - 🐙 **GitHub Stats:** repositórios, estrelas, seguidores, linguagens mais usadas e repositórios recentes, buscados em tempo real na **API pública do GitHub** (com cache por sessão).
 - 📱 **Responsivo:** em telas menores que 768px as janelas abrem em tela cheia e a barra de tarefas mostra só os ícones.
-
-### 🛣️ Roadmap
-
-- [ ] App **YouTube** redesenhado, com curtidas salvas no **Supabase**
-- [ ] **Contador de visitas** (Supabase)
-- [ ] Widgets: **Spotify / Last.fm** (tocando agora) e **WakaTime**
 
 ---
 
@@ -101,7 +98,11 @@
 
 ### 🖥️ Serviços (back-end como serviço)
 
+* **Função serverless:** Vercel Functions (Node.js) — `api/wakatime.js`, que guarda a chave secreta do WakaTime no servidor
+* **Banco de dados:** Supabase (PostgreSQL) — curtidas e contador de visitas, acessados por funções SQL `security definer` (tabelas protegidas por RLS)
 * **E-mail:** EmailJS (`@emailjs/browser`) — envio do formulário de contato direto do front-end
+* **Música:** Last.fm API — última música ouvida no Spotify (scrobbles)
+* **Código:** WakaTime API — estatísticas de programação
 * **Vídeos:** YouTube (embeds)
 * **Dados do GitHub:** API REST pública do GitHub (`fetch`, sem token)
 
@@ -121,7 +122,7 @@
 | `@emotion/react` / `@emotion/styled` | 11.14 | Motor de estilos da Material UI |
 | `@emailjs/browser` | 5.0 | Envio de e-mail do formulário |
 | `react-icons` | 5.7 | Ícones |
-| `@supabase/supabase-js` | 2.117 | Banco de dados (em integração — ver roadmap) |
+| `@supabase/supabase-js` | 2.117 | Cliente do banco de dados (curtidas e visitas) |
 | `vite` | 8.3 | Servidor de desenvolvimento e build (dev) |
 | `eslint` | 10 | Análise estática de código (dev) |
 
@@ -149,11 +150,17 @@ flowchart TD
     APPS -->|formulário| EMAILJS[EmailJS]
     APPS -->|embed| YT[YouTube]
     APPS -->|fetch| GH[API do GitHub]
+    APPS -->|fetch| LFM[Last.fm]
+    APPS -->|rpc| SB[(Supabase<br/>curtidas + visitas)]
+    APPS -->|fetch /api/wakatime| FN[Função serverless<br/>Vercel]
+    FN -->|chave secreta| WK[WakaTime]
 ```
 
 **Decisões e trade-offs:**
 - **Estilos inline** deixam cada componente com o próprio visual; o custo é alguma repetição. A **Material UI** foi usada onde ela agrega mais (timeline e formulário com validação).
-- **EmailJS** envia e-mails sem servidor próprio; as chaves usadas são **públicas** por design.
+- **Back-end enxuto:** em vez de um servidor próprio, o projeto usa **serviços gerenciados** (Supabase, EmailJS) e **uma função serverless** só onde há segredo a proteger (WakaTime). Chaves `VITE_*` são públicas por design; a chave do WakaTime fica apenas no servidor.
+- **Banco seguro com chave pública:** as tabelas do Supabase têm RLS ativado e nenhuma política de escrita; o site só chama funções SQL específicas (`alternar_curtida`, `registrar_visita`...).
+- **Degradação elegante:** cada integração some da tela se não estiver configurada, sem quebrar o site.
 - **Datas no formato `AAAA-MM`** permitem ordenar a timeline com uma simples comparação de texto.
 - **Sem roteador:** links compartilháveis são feitos com o parâmetro `?abrir=` (lido com `URLSearchParams`).
 
@@ -168,15 +175,24 @@ flowchart TD
 
 ### 🔑 Variáveis de Ambiente
 
-Crie o arquivo **`meu-portfolio-os/.env`** a partir do exemplo (`meu-portfolio-os/.env.example`):
+Crie o arquivo **`meu-portfolio-os/.env`** copiando o exemplo (`meu-portfolio-os/.env.example`). Todas são opcionais: sem elas, a funcionalidade correspondente apenas não aparece.
 
 | Variável | Descrição | Onde encontrar |
 | :--- | :--- | :--- |
 | `VITE_EMAILJS_SERVICE_ID` | ID do serviço de e-mail | EmailJS → Email Services |
 | `VITE_EMAILJS_TEMPLATE_ID` | ID do template (usa `{{name}}`, `{{email}}`, `{{message}}`) | EmailJS → Email Templates |
 | `VITE_EMAILJS_PUBLIC_KEY` | Chave pública da conta | EmailJS → Account → General |
+| `VITE_SUPABASE_URL` | URL do projeto Supabase | Supabase → Project Settings → API |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Chave pública (publishable / anon) | Supabase → Project Settings → API |
+| `VITE_LASTFM_USER` | Usuário do Last.fm | last.fm |
+| `VITE_LASTFM_API_KEY` | Chave da API do Last.fm | last.fm/api/account/create |
+| `WAKATIME_API_KEY` | Chave **secreta** do WakaTime (sem `VITE_`, lida só pela função serverless) | wakatime.com/settings/api-key |
 
-> **Obs:** em projetos **Vite**, as variáveis precisam começar com `VITE_` para ficarem disponíveis no front-end. Sem elas o site funciona normalmente, apenas o envio do formulário fica desativado.
+> **Obs:** em projetos **Vite**, só variáveis com prefixo `VITE_` chegam ao front-end — por isso a chave do WakaTime **não** usa o prefixo.
+
+#### 💾 Banco de dados (Supabase)
+
+No painel do Supabase, abra **SQL Editor → New query**, cole o conteúdo de [`meu-portfolio-os/supabase/schema.sql`](meu-portfolio-os/supabase/schema.sql) e clique em **Run**. O script cria as tabelas `curtidas` e `visitas` e as funções usadas pelo site.
 
 ### 📦 Instalação de Dependências
 
@@ -192,6 +208,8 @@ npm install
 npm run dev       # servidor de desenvolvimento
 ```
 🎨 *Disponível em **http://localhost:5173**.*
+
+> 💡 A função serverless (`/api/wakatime`) só roda na Vercel. Para testá-la localmente, use `npx vercel dev` no lugar de `npm run dev`.
 
 Outros scripts:
 
@@ -210,7 +228,7 @@ O site é hospedado na **Vercel**, conectada a este repositório:
 1. **Add New → Project** na Vercel e importar o repositório `Portfolio-PROJECT`.
 2. **Root Directory:** `meu-portfolio-os` (o projeto fica nessa subpasta).
 3. **Framework Preset:** Vite (detectado automaticamente) — build `npm run build`, saída `dist`.
-4. **Environment Variables:** cadastrar as três variáveis `VITE_EMAILJS_*`.
+4. **Environment Variables:** cadastrar as variáveis da tabela acima (EmailJS, Supabase, Last.fm e WakaTime).
 5. A cada `git push` na `main`, a Vercel faz um novo deploy automaticamente.
 
 ---
@@ -223,6 +241,10 @@ O site é hospedado na **Vercel**, conectada a este repositório:
 ├── docs/screenshots/              # 🖼️ Prints usados no README
 └── meu-portfolio-os/              # 📁 Aplicação React (Vite)
     ├── .env.example               # 🧩 Variáveis de ambiente necessárias (sem valores)
+    ├── api/
+    │   └── wakatime.js            # ☁️ Função serverless (Vercel): protege a chave do WakaTime
+    ├── supabase/
+    │   └── schema.sql             # 💾 Tabelas e funções do banco (curtidas e visitas)
     ├── index.html                 # 📄 HTML base
     ├── package.json               # 📦 Dependências e scripts
     ├── public/                    # 📂 Arquivos estáticos
@@ -233,10 +255,11 @@ O site é hospedado na **Vercel**, conectada a este repositório:
         ├── main.jsx               # 🚪 Ponto de entrada + tema da Material UI
         ├── App.jsx                # 🧠 Lista de apps e controle das janelas
         ├── index.css              # 🎨 Reset global
-        ├── components/            # 🧱 Peças do OS: Janela, Taskbar, IconeDesktop, Icone, BootScreen
+        ├── components/            # 🧱 Peças do OS: Janela, Taskbar, IconeDesktop, Icone, BootScreen, Widgets
         ├── apps/                  # 🪟 Um componente por app: SobreMim, Projetos, Experiencias, Contato...
         ├── data/                  # 🗃️ Conteúdo: sobre, projetos, experiencias, contato, certificados...
-        └── hooks/                 # 🎣 useIsMobile (detecta tela de celular)
+        ├── hooks/                 # 🎣 useIsMobile, useCurtidas, useVisitas, useTocandoAgora
+        └── lib/                   # 🔌 supabase.js (cliente do banco + id anônimo do visitante)
 ```
 
 ---
@@ -253,6 +276,8 @@ O site é hospedado na **Vercel**, conectada a este repositório:
 | <img src="docs/screenshots/03-sobre-mim.png" alt="App Sobre Mim" width="400px"> | <img src="docs/screenshots/04-projetos.png" alt="App Projetos" width="400px"> |
 | **Experiências** | **Contato** |
 | <img src="docs/screenshots/05-experiencias.png" alt="App Experiências" width="400px"> | <img src="docs/screenshots/06-contato.png" alt="App Contato" width="400px"> |
+| **YouTube (meu canal)** | **Jogos + GitHub Stats** |
+| <img src="docs/screenshots/08-youtube.png" alt="App YouTube" width="400px"> | <img src="docs/screenshots/09-jogos-github.png" alt="Apps Jogos e GitHub" width="400px"> |
 
 ### 📱 Versão Mobile
 
@@ -277,6 +302,11 @@ O projeto não possui testes automatizados. A qualidade é verificada com:
 * 📖 [**Material UI** — Timeline](https://mui.com/material-ui/react-timeline/) e [componentes](https://mui.com/material-ui/)
 * 📖 [**react-rnd**](https://github.com/bokuweb/react-rnd)
 * 📖 [**EmailJS** — SDK para navegador](https://www.emailjs.com/docs/sdk/installation/)
+* 📖 [**Supabase** — funções do banco (RPC)](https://supabase.com/docs/reference/javascript/rpc) e [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+* 📖 [**Vercel Functions**](https://vercel.com/docs/functions)
+* 📖 [**Last.fm API** — user.getRecentTracks](https://www.last.fm/api/show/user.getRecentTracks)
+* 📖 [**WakaTime API** — stats](https://wakatime.com/developers#stats)
+* 📖 [**GitHub REST API** — users e repos](https://docs.github.com/rest/users/users)
 * 📖 [**Vercel** — deploy de projetos Vite](https://vercel.com/docs/frameworks/vite)
 * 📖 Repositório de referência: [joaopauloaramuni-portfolio](https://github.com/joaopauloaramuni/joaopauloaramuni-portfolio)
 

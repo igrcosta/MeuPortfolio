@@ -1,209 +1,159 @@
 import { useState } from 'react';
+import { FaYoutube, FaThumbsUp, FaRegThumbsUp, FaShareAlt, FaCheck } from 'react-icons/fa';
+import { canal, videos } from '../data/youtube';
+import useCurtidas from '../hooks/useCurtidas';
+
+// Miniatura: a do próprio YouTube, ou um bloco escuro para vídeos .mp4
+function Miniatura({ video, largura }) {
+  if (video.tipo === 'mp4') {
+    return (
+      <div style={{ width: largura, aspectRatio: '16/9', background: '#272727', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        🎬
+      </div>
+    );
+  }
+  return (
+    <img
+      src={`https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`}
+      alt=""
+      style={{ width: largura, aspectRatio: '16/9', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
+    />
+  );
+}
+
+// Botão estilo YouTube (cinza arredondado)
+const estiloBotao = {
+  background: '#272727',
+  color: '#f1f1f1',
+  border: 'none',
+  borderRadius: '18px',
+  padding: '8px 14px',
+  fontSize: '13px',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px'
+};
 
 export default function YoutubeApp() {
-    const [likes, setLikes] = useState(128);
-    const [liked, setLiked] = useState(false);
-    const [comentarios, setComentarios] = useState([
-        { id: 1, usuario: '@UsuarioDaSilva', tempo: 'há 10 dias', texto: 'Muito top! 🔥🔥', avatar: '👤' },
-        { id: 2, usuario: '@JalinRabei', tempo: 'há 2 semanas', texto: 'Incrível explicação cara, parabéns pelo projeto!', avatar: '👨‍💻' }
-    ]);
-    const [novoComentario, setNovoComentario] = useState('');
+  const [atual, setAtual] = useState(videos[0]);
+  const [copiado, setCopiado] = useState(false);
+  const curtidas = useCurtidas(atual.id);
 
-    const handleLike = () => {
-        if (liked) {
-            setLikes(likes - 1);
-            setLiked(false);
-        } else {
-            setLikes(likes + 1);
-            setLiked(true);
-        }
-    };
+  const linkDoVideo = atual.tipo === 'mp4' ? canal.url : `https://youtu.be/${atual.id}`;
 
-    const handleAddComment = (e) => {
-        e.preventDefault();
-        if (!novoComentario.trim()) return;
+  const compartilhar = async () => {
+    try {
+      await navigator.clipboard.writeText(linkDoVideo);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2000);
+    } catch {
+      window.open(linkDoVideo, '_blank', 'noopener');
+    }
+  };
 
-        setComentarios([
-            {
-                id: Date.now(),
-                usuario: '@VisitanteDev',
-                tempo: 'agora mesmo',
-                texto: novoComentario,
-                avatar: '6️⃣7️⃣'
-            },
-            ...comentarios
-        ]);
-        setNovoComentario('');
-    };
+  return (
+    <div style={{ backgroundColor: '#0f0f0f', color: '#f1f1f1', height: '100%', overflowY: 'auto', fontFamily: 'Roboto, Arial, sans-serif' }}>
 
-    return (
-        <div style={{ backgroundColor: '#0f0f0f', color: '#f1f1f1', height: '100%', overflowY: 'auto', fontFamily: 'Roboto, Arial, sans-serif' }}>
-
-            {/* 1. BARRA SUPERIOR (HEADER) */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 16px', backgroundColor: '#0f0f0f', position: 'sticky', top: 0, zIndex: 10, borderBottom: '1px solid #272727' }}>
-
-                {/* Logo */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
-                    <span style={{ color: '#ff0000', fontSize: '20px', fontWeight: 'bold' }}>▶</span>
-                    <span style={{ fontSize: '16px', fontWeight: 'bold', letterSpacing: '-0.5px' }}>YouTube</span>
-                </div>
-
-                {/* Campo de Busca */}
-                <div style={{ display: 'flex', alignItems: 'center', width: '40%', maxWidth: '400px' }}>
-                    <input
-                        type="text"
-                        placeholder="Pesquisar"
-                        style={{ width: '100%', backgroundColor: '#121212', border: '1px solid #303030', color: '#fff', padding: '6px 12px', borderRadius: '20px 0 0 20px', fontSize: '13px', outline: 'none' }}
-                    />
-                    <button style={{ backgroundColor: '#222222', border: '1px solid #303030', borderLeft: 'none', color: '#fff', padding: '6px 14px', borderRadius: '0 20px 20px 0', cursor: 'pointer' }}>
-                        🔍
-                    </button>
-                </div>
-
-                {/* Perfil */}
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold' }}>
-                    U
-                </div>
-            </div>
-
-            {/* 2. CORPO PRINCIPAL (VÍDEO + RECOMENDADOS) */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '20px', padding: '16px' }}>
-
-                {/* COLUNA DA ESQUERDA (VÍDEO, TÍTULO, AÇÕES, COMENTÁRIOS) */}
-                <div>
-                    {/* Player de Vídeo Embed */}
-                    <div style={{ width: '100%', aspectRatio: '16/9', backgroundColor: '#000', borderRadius: '12px', overflow: 'hidden' }}>
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            src="https://www.youtube.com/embed/xckdE-H2auY"
-                            title="Cyberleek O HERÓI QUE SE TORNOU VILÃO"
-                            style={{ border: 'none' }}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-
-                    {/* Título */}
-                    <h1 style={{ fontSize: '16px', margin: '12px 0 8px', fontWeight: 'bold', color: '#f1f1f1' }}>
-                        Cyberleek O HERÓI QUE SE TORNOU VILÃO #gta6 #gaming #hacker
-                    </h1>
-
-                    {/* Canal, Inscrever-se e Ações */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
-
-                        {/* Infos do Canal */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#ff0000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
-                                C
-                            </div>
-                            <div>
-                                <strong style={{ fontSize: '13px', display: 'block' }}>Cyberleek</strong>
-                                <span style={{ fontSize: '11px', color: '#aaa' }}>12,4 mil inscritos</span>
-                            </div>
-                            <button style={{ backgroundColor: '#f1f1f1', color: '#0f0f0f', border: 'none', padding: '8px 14px', borderRadius: '18px', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer', marginLeft: '10px' }}>
-                                Inscrever-se
-                            </button>
-                        </div>
-
-                        {/* Botões Like / Share */}
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            <div style={{ backgroundColor: '#272727', borderRadius: '18px', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-                                <button
-                                    onClick={handleLike}
-                                    style={{ backgroundColor: 'transparent', color: liked ? '#38bdf8' : '#fff', border: 'none', padding: '6px 12px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                                >
-                                    👍 {likes}
-                                </button>
-                                <span style={{ color: '#555' }}>|</span>
-                                <button style={{ backgroundColor: 'transparent', color: '#fff', border: 'none', padding: '6px 12px', cursor: 'pointer', fontSize: '12px' }}>
-                                    👎
-                                </button>
-                            </div>
-
-                            <button style={{ backgroundColor: '#272727', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '18px', fontSize: '12px', cursor: 'pointer' }}>
-                                ↗ Compartilhar
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Descrição do Vídeo */}
-                    <div style={{ backgroundColor: '#272727', borderRadius: '12px', padding: '12px', fontSize: '12px', color: '#d9d9d9', marginBottom: '20px' }}>
-                        <strong>134 mil visualizações • há 1 mês</strong>
-                        <p style={{ margin: '6px 0 0' }}>
-                            Análise completa sobre a trajetória do Cyberleek no universo gamer e a transição histórica envolvida no caso do GTA 6.
-                        </p>
-                    </div>
-
-                    {/* SEÇÃO DE COMENTÁRIOS */}
-                    <div>
-                        <h3 style={{ fontSize: '14px', marginBottom: '12px' }}>{comentarios.length} comentários</h3>
-
-                        {/* Adicionar Comentário */}
-                        <form onSubmit={handleAddComment} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-                            <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                                U
-                            </div>
-                            <input
-                                type="text"
-                                placeholder="Adicione um comentário..."
-                                value={novoComentario}
-                                onChange={(e) => setNovoComentario(e.target.value)}
-                                style={{ flex: 1, backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #303030', color: '#fff', fontSize: '12px', outline: 'none' }}
-                            />
-                            <button type="submit" style={{ backgroundColor: '#2563eb', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '16px', fontSize: '12px', cursor: 'pointer' }}>
-                                Comentar
-                            </button>
-                        </form>
-
-                        {/* Lista de Comentários */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                            {comentarios.map((c) => (
-                                <div key={c.id} style={{ display: 'flex', gap: '10px', fontSize: '12px' }}>
-                                    <span>{c.avatar}</span>
-                                    <div>
-                                        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                                            <strong style={{ fontSize: '11px' }}>{c.usuario}</strong>
-                                            <span style={{ fontSize: '10px', color: '#aaa' }}>{c.tempo}</span>
-                                        </div>
-                                        <p style={{ margin: '2px 0 0', color: '#d9d9d9' }}>{c.texto}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* COLUNA DA DIREITA (RECOMENDADOS) */}
-                <div>
-                    <h4 style={{ fontSize: '12px', margin: '0 0 10px', color: '#aaa' }}>Recomendados</h4>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-
-                        <div style={{ display: 'flex', gap: '8px', cursor: 'pointer' }}>
-                            <div style={{ width: '100px', height: '56px', backgroundColor: '#272727', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
-                                🎮
-                            </div>
-                            <div>
-                                <strong style={{ fontSize: '11px', display: 'block', color: '#fff' }}>Game Launcher OS</strong>
-                                <span style={{ fontSize: '10px', color: '#aaa' }}>Meu Portfólio</span>
-                            </div>
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '8px', cursor: 'pointer' }}>
-                            <div style={{ width: '100px', height: '56px', backgroundColor: '#272727', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
-                                📜
-                            </div>
-                            <div>
-                                <strong style={{ fontSize: '11px', display: 'block', color: '#fff' }}>Meus Certificados</strong>
-                                <span style={{ fontSize: '10px', color: '#aaa' }}>Formação Dev</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
+      {/* Cabeçalho */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', position: 'sticky', top: 0, zIndex: 2, background: '#0f0f0f', borderBottom: '1px solid #272727' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 'bold', fontSize: '17px' }}>
+          <FaYoutube color="#ff0000" size={24} /> YouTube
         </div>
-    );
+        <a href={canal.url} target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', fontSize: '13px', textDecoration: 'none' }}>
+          @{canal.nome}
+        </a>
+      </div>
+
+      {/* Corpo: player + lista (a lista desce para baixo quando a janela é estreita) */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', padding: '16px' }}>
+
+        {/* Coluna do player */}
+        <div style={{ flex: '1 1 420px', minWidth: 0 }}>
+          <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '12px', overflow: 'hidden' }}>
+            {atual.tipo === 'mp4' ? (
+              <video key={atual.id} src={atual.src} controls style={{ width: '100%', height: '100%', display: 'block' }} />
+            ) : (
+              <iframe
+                key={atual.id}
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${atual.id}?rel=0`}
+                title={atual.titulo}
+                style={{ border: 'none', display: 'block' }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+          </div>
+
+          <h1 style={{ fontSize: '18px', margin: '12px 0 10px' }}>{atual.titulo}</h1>
+
+          {/* Canal + ações */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src="/images&Icons/Foto minha.jpeg" alt="" style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover' }} />
+              <strong style={{ fontSize: '14px' }}>{canal.nome}</strong>
+              <a
+                href={`${canal.url}?sub_confirmation=1`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ background: '#f1f1f1', color: '#0f0f0f', padding: '8px 14px', borderRadius: '18px', fontWeight: 'bold', fontSize: '13px', textDecoration: 'none' }}
+              >
+                Inscrever-se
+              </a>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {/* Curtir: só aparece se o Supabase estiver configurado */}
+              {curtidas.disponivel && (
+                <button onClick={curtidas.alternar} style={{ ...estiloBotao, color: curtidas.curtido ? '#3ea6ff' : '#f1f1f1' }}>
+                  {curtidas.curtido ? <FaThumbsUp /> : <FaRegThumbsUp />} {curtidas.total}
+                </button>
+              )}
+              <button onClick={compartilhar} style={estiloBotao}>
+                {copiado ? <><FaCheck /> Link copiado!</> : <><FaShareAlt /> Compartilhar</>}
+              </button>
+            </div>
+          </div>
+
+          <div style={{ background: '#272727', borderRadius: '12px', padding: '12px', fontSize: '13px', lineHeight: 1.6, color: '#d9d9d9' }}>
+            {atual.descricao}
+          </div>
+        </div>
+
+        {/* Lista de vídeos */}
+        <div style={{ flex: '1 1 240px', minWidth: 0 }}>
+          <h4 style={{ margin: '0 0 10px', fontSize: '14px', color: '#aaa' }}>Meus vídeos</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {videos.map((video) => (
+              <button
+                key={video.id}
+                onClick={() => setAtual(video)}
+                style={{
+                  display: 'flex',
+                  gap: '10px',
+                  alignItems: 'flex-start',
+                  textAlign: 'left',
+                  background: video.id === atual.id ? '#272727' : 'transparent',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '6px',
+                  color: '#f1f1f1',
+                  cursor: 'pointer'
+                }}
+              >
+                <Miniatura video={video} largura="140px" />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: '13px', fontWeight: 'bold', lineHeight: 1.3 }}>{video.titulo}</div>
+                  <div style={{ fontSize: '12px', color: '#aaa', marginTop: '4px' }}>{canal.nome}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
 }
