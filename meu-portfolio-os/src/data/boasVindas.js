@@ -1,6 +1,6 @@
 // Vídeo de boas-vindas: abre sozinho quando alguém entra no OS.
 // Para trocar o vídeo: cole aqui só o ID do YouTube (o que vem depois de "youtu.be/" ou "v=").
-// Ex.: https://youtu.be/AbC123xyz  ->  videoId: 'AbC123xyz'
+
 export const boasVindas = {
   videoId: 'CMIr3xr2O3o',
   titulo: 'Bem-vindo ao meu OS! 👋',

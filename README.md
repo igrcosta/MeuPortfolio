@@ -20,7 +20,7 @@
 
 ---
 
-## 🚧 Status do Projeto
+## Recursos Utilizados No Projeto
 
 ![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-19.3-007ec6?style=for-the-badge&logo=react&logoColor=white)
@@ -31,7 +31,7 @@
 
 ---
 
-## 📚 Índice
+## Sumário
 - [Links Úteis](#-links-úteis)
 - [Sobre o Projeto](#-sobre-o-projeto)
 - [Funcionalidades Principais](#-funcionalidades-principais)
@@ -49,21 +49,25 @@
 
 ---
 
-## 🔗 Links Úteis
+## Links Úteis
 * 🌐 **Site no ar:** [igor-portfolio-eight.vercel.app](https://igor-portfolio-eight.vercel.app/)
   > 💻 Hospedado gratuitamente na **Vercel**, com deploy automático a cada `push` na branch `main`.
 * 🔗 **Links diretos para apps:** o parâmetro `?abrir=` abre apps específicos ao entrar no site. Ex.: [`?abrir=projetos`](https://igor-portfolio-eight.vercel.app/?abrir=projetos) ou [`?abrir=sobre,contato`](https://igor-portfolio-eight.vercel.app/?abrir=sobre,contato).
 
 ---
 
-## 📝 Sobre o Projeto
+## Sobre o Projeto
 
-- **Por que existe:** o laboratório pede um portfólio com Sobre Mim, Projetos, Experiências e Contato. Eu queria que ele também **mostrasse quem eu sou**: alguém que programa, edita vídeos e quer viver de criar conteúdo.
-- **Qual problema resolve:** currículos em PDF são estáticos e iguais. Aqui o recrutador ou visitante **explora** a trajetória no próprio ritmo, assiste a vídeos, joga e entra em contato sem sair da página.
-- **Contexto:** acadêmico (LAB01 — DIAW, PUC Minas) e profissional. O site é o portfólio que uso no dia a dia, divulgado nas redes e no YouTube.
-- **Diferencial:** a interface de sistema operacional (boot, janelas, barra de tarefas) e os links `?abrir=` para divulgação.
+- **Por que existe:** Professor Aramuni da matéria de DIAW requisitou um portfólio com Sobre Mim, Projetos, Experiências e Contato, incentivando a gente a ser criativo! Nisso, apesar de ser muito inciante, eu aceitei o desafio e me propus a fazer um mini Sistema Operacional. Eu queria que ele também **mostrasse quem eu sou**: alguém que programa, edita vídeos e quer viver de criar conteúdo.
+- **Qual problema resolve:** currículos em PDF são estáticos e iguais. Aqui o recrutador ou visitante **explora** a trajetória no próprio ritmo, assiste a vídeos, joga e entra em contato sem sair da página, a ideia é trazer mais personalidade para quem for conhecer mais sobre meu trabalho / carreira!
+- **Contexto:** acadêmico (LAB01 — DIAW, PUC Minas) e profissional. O site é o portfólio que vou começar a usar no dia a dia, divulgado nas redes e no YouTube.
+- **Diferencial:** a interface de sistema operacional (boot, janelas, barra de tarefas) e os links `?abrir=` para divulgação, sem contar com o próprio Youtube que criei com muito sofrimento kkkk
 
 ---
+
+## Uso de IA
+- **Você utilizou IA para esse projeto?** Sim! Pelo fato de ser muito iniciante nessa área de React e por estar meio enferrujado em web design, Utilizei das IAs como Gemini e Claude para irem me orientando durante esse processo. Mas utilizei apenas como orientadores e para recursos mais superficiais como esse wallpaper. Meu foco foi em trazer os aplicativos com as melhores experiências / aparências possíveis!
+Eu montei o design de todo o OS pelo meu computador pessoal no Photoshop, recebi orientações para as melhores práticas, o Claude me orientou como deveria utilizar o supabase. De resto foi meu esforço e muita raiva que passei por não entender muito bem como fazer no início kkk, esse readme foi aprimorado com o Gemini também para deixar o melhor possível para os interessados.
 
 ## ✨ Funcionalidades Principais
 
@@ -159,9 +163,9 @@ flowchart TD
 
 ### 🎨 Design System
 
-A identidade visual foi construída como um **design system** em [`src/theme/`](meu-portfolio-os/src/theme/), inspirado no macOS/visionOS:
+A identidade visual foi construída como um **design system** em [`src/theme/`](meu-portfolio-os/src/theme/), inspirado no macOS/visionOS, a minha ideia foi de trazer bastante glassmorphism, o que deixa essa impressão das janelas serem translúcidas como vidro:
 
-- **Tokens** (`tokens.js`): paleta **preto + roxo `#9D00FF`** com as cores de sistema da Apple, níveis de **vidro** (glassmorphism com `backdrop-filter`), raios, sombras, escala tipográfica (Inter), espaçamentos em múltiplos de 4 e transições. Nenhum componente escreve cor "na mão".
+- **Tokens** (`tokens.js`): paleta **preto + roxo `#9D00FF`**, níveis de **vidro** (glassmorphism com `backdrop-filter`), raios, sombras, escala tipográfica (Inter), espaçamentos em múltiplos de 4 e transições. Nenhum componente escreve cor "na mão".
 - **Componentes base** (`ui.jsx`): `TelaApp`, `TituloApp`, `TituloSecao`, `Cartao`, `Etiqueta`, `Botao`, `LinkTexto`, reaproveitados por todos os apps.
 - **Ícones em ladrilho:** cada app tem um ícone quadrado arredondado com gradiente, como os apps da Apple.
 - **Resultado:** de **53 cores diferentes escritas à mão em 183 lugares** para uma única fonte de verdade.
@@ -176,7 +180,7 @@ A identidade visual foi construída como um **design system** em [`src/theme/`](
 
 ---
 
-## 🔧 Instalação e Execução
+## 🔧 Como Fazer a Instalação e Execução
 
 ### Pré-requisitos
 
@@ -308,7 +312,7 @@ O projeto não possui testes automatizados. A qualidade é verificada com:
 
 ---
 
-## 🔗 Documentações utilizadas
+## 🔗 Documentações para te ajudar a entender tudo o que engloba esse mini OS
 
 * 📖 [Documentação oficial do **React**](https://react.dev/reference/react)
 * 📖 [Guia de configuração do **Vite**](https://vitejs.dev/config/)
@@ -325,7 +329,7 @@ O projeto não possui testes automatizados. A qualidade é verificada com:
 
 ---
 
-## 👥 Autores
+## 👥 Autor
 
 | 👤 Nome | 🖼️ Foto | :octocat: GitHub | 📺 YouTube | 📤 Gmail |
 |---------|----------|-----------------|-------------|-----------|
