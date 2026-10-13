@@ -60,7 +60,7 @@ export const depoimentos = [
     nome: 'Thiago Vieira',
     cargo: 'Chefe',
     empresa: 'Acesso Marketing',
-    foto: '/Images&Icons/Thiago pfp.jpg',
+    foto: '/images&Icons/Thiago pfp.jpg',
     texto: 'O Igor trabalha comigo há pouco mais de seis meses e, desde o início, se destacou pela capacidade de resolver problemas, aprender rápido e assumir cada entrega com responsabilidade e compromisso. Nesse período, liderou a entrega de dashboards automatizados de performance de marketing, oferecendo aos nossos clientes uma visão dos resultados em tempo real.'
   }
 ];
