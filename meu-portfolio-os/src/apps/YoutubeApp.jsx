@@ -157,13 +157,20 @@ function Comentarios({ videoId }) {
   );
 }
 
-// Miniatura: a do próprio YouTube, ou um bloco escuro para vídeos .mp4
+// Miniatura: a do próprio YouTube, ou a capa .jpg do vídeo .mp4
 function Miniatura({ video }) {
-  const estilo = { width: '132px', aspectRatio: '16/9', borderRadius: raio.md, flexShrink: 0, objectFit: 'cover' };
-  if (video.tipo === 'mp4') {
-    return <div style={{ ...estilo, background: cor.superficie, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🎬</div>;
-  }
-  return <img src={`https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`} alt="" style={estilo} />;
+  const estilo = { width: '132px', aspectRatio: '16/9', borderRadius: raio.md, flexShrink: 0, objectFit: 'cover', background: cor.superficie };
+  const src = video.tipo === 'mp4' ? video.capa : `https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`;
+  return <img src={src} alt="" loading="lazy" style={estilo} />;
+}
+
+// Título de grupo da lista lateral
+function TituloLista({ children }) {
+  return (
+    <h4 style={{ margin: `0 0 ${espaco[3]}`, fontSize: fonte.xs, letterSpacing: '0.08em', textTransform: 'uppercase', color: cor.textoTerciario }}>
+      {children}
+    </h4>
+  );
 }
 
 export default function YoutubeApp() {
@@ -171,7 +178,8 @@ export default function YoutubeApp() {
   const [copiado, setCopiado] = useState(false);
   const curtidas = useCurtidas(atual.id);
 
-  const linkDoVideo = atual.tipo === 'mp4' ? canal.url : `https://youtu.be/${atual.id}`;
+  // Vídeos do YouTube: link do próprio YouTube. Demos .mp4: link do IgorOS já abrindo este app.
+  const linkDoVideo = atual.tipo === 'mp4' ? `${window.location.origin}/?abrir=youtube` : `https://youtu.be/${atual.id}`;
 
   const compartilhar = async () => {
     try {
@@ -192,7 +200,7 @@ export default function YoutubeApp() {
         <div style={{ flex: '1 1 420px', minWidth: 0 }}>
           <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: raio.lg, overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
             {atual.tipo === 'mp4' ? (
-              <video key={atual.id} src={atual.src} controls style={{ width: '100%', height: '100%', display: 'block' }} />
+              <video key={atual.id} src={atual.src} poster={atual.capa} controls playsInline preload="metadata" style={{ width: '100%', height: '100%', display: 'block' }} />
             ) : (
               <iframe
                 key={atual.id}
@@ -243,38 +251,45 @@ export default function YoutubeApp() {
           <Comentarios videoId={atual.id} />
         </div>
 
-        {/* Lista de vídeos */}
-        <div style={{ flex: '1 1 260px', minWidth: 0 }}>
-          <h4 style={{ margin: `0 0 ${espaco[3]}`, fontSize: fonte.xs, letterSpacing: '0.08em', textTransform: 'uppercase', color: cor.textoTerciario }}>
-            Meus vídeos
-          </h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: espaco[2] }}>
-            {videos.map((video) => (
-              <button
-                key={video.id}
-                onClick={() => setAtual(video)}
-                style={{
-                  display: 'flex',
-                  gap: espaco[3],
-                  alignItems: 'flex-start',
-                  textAlign: 'left',
-                  background: video.id === atual.id ? cor.roxoSuave : 'transparent',
-                  border: `1px solid ${video.id === atual.id ? cor.roxoBorda : 'transparent'}`,
-                  borderRadius: raio.lg,
-                  padding: espaco[2],
-                  color: cor.texto,
-                  cursor: 'pointer',
-                  fontFamily: fonte.familia
-                }}
-              >
-                <Miniatura video={video} />
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: fonte.sm, fontWeight: fonte.semi, lineHeight: 1.3 }}>{video.titulo}</div>
-                  <div style={{ fontSize: fonte.xs, color: cor.textoTerciario, marginTop: '4px' }}>{canal.nome}</div>
+        {/* Lista lateral: vídeos do YouTube e demos de edição (.mp4) em seções separadas */}
+        <div style={{ flex: '1 1 260px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: espaco[6] }}>
+          {[
+            { titulo: 'Meus vídeos', lista: videos.filter((v) => v.tipo !== 'mp4') },
+            { titulo: 'Demos de edição', lista: videos.filter((v) => v.tipo === 'mp4') }
+          ]
+            .filter((grupo) => grupo.lista.length > 0)
+            .map((grupo) => (
+              <section key={grupo.titulo}>
+                <TituloLista>{grupo.titulo}</TituloLista>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: espaco[2] }}>
+                  {grupo.lista.map((video) => (
+                    <button
+                      key={video.id}
+                      onClick={() => setAtual(video)}
+                      style={{
+                        display: 'flex',
+                        gap: espaco[3],
+                        alignItems: 'flex-start',
+                        textAlign: 'left',
+                        background: video.id === atual.id ? cor.roxoSuave : 'transparent',
+                        border: `1px solid ${video.id === atual.id ? cor.roxoBorda : 'transparent'}`,
+                        borderRadius: raio.lg,
+                        padding: espaco[2],
+                        color: cor.texto,
+                        cursor: 'pointer',
+                        fontFamily: fonte.familia
+                      }}
+                    >
+                      <Miniatura video={video} />
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: fonte.sm, fontWeight: fonte.semi, lineHeight: 1.3 }}>{video.titulo}</div>
+                        <div style={{ fontSize: fonte.xs, color: cor.textoTerciario, marginTop: '4px' }}>{canal.nome}</div>
+                      </div>
+                    </button>
+                  ))}
                 </div>
-              </button>
+              </section>
             ))}
-          </div>
         </div>
 
       </div>

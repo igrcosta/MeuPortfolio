@@ -74,7 +74,7 @@
 - 🗂️ **Projetos em linha do tempo:** do mais antigo ao mais recente, com descrição, tecnologias, link do GitHub e imagem/trailer, usando o `Timeline` da Material UI.
 - 💼 **Experiências:** experiência profissional, formação e conquistas, com empresa/instituição, cargo, período e descrição.
 - ✉️ **Contato:** ícones clicáveis (e-mail, WhatsApp, YouTube, GitHub, itch.io) e formulário com **validação** e **envio por e-mail** (EmailJS).
-- 📺 **YouTube:** meu canal dentro do OS — player, lista de vídeos, botão de inscrição, **curtidas** (uma por visitante) e **comentários com apelido em tempo real**, tudo salvo no Supabase.
+- 📺 **YouTube:** meu canal dentro do OS — player, lista de vídeos, **demos de edição em vídeo** (arquivos `.mp4` próprios), botão de inscrição, **curtidas** (uma por visitante) e **comentários com apelido em tempo real**, tudo salvo no Supabase.
 - ⌨️ **WakaTime:** tempo programando nos últimos 7 dias e linguagens mais usadas, buscados por uma **função serverless** (`/api/wakatime`) que protege a chave secreta.
 - 🎮 **Jogos:** launcher com os jogos que desenvolvi, com trailer e botão para jogar no navegador (itch.io). Reaproveita os dados da timeline, filtrando `tipo: 'jogo'`.
 - 📜 **Certificados:** galeria de certificados com prévia e abertura do PDF.
@@ -260,7 +260,9 @@ O site é hospedado na **Vercel**, conectada a este repositório:
     ├── public/                    # 📂 Arquivos estáticos
     │   ├── certificates/          # 📜 PDFs e prévias dos certificados
     │   ├── images&Icons/          # 🖼️ Foto e ícones dos apps
-    │   └── projetos/              # 🖼️ Prints dos projetos da timeline
+    │   ├── projetos/              # 🖼️ Prints dos projetos da timeline
+    │   ├── videos/                # 🎬 Demos de edição (.mp4) e suas miniaturas
+    │   └── wallpapers/            # 🌌 Papel de parede do sistema
     └── src/
         ├── main.jsx               # 🚪 Ponto de entrada + tema da Material UI
         ├── App.jsx                # 🧠 Lista de apps e controle das janelas
