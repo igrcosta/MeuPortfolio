@@ -1,16 +1,17 @@
-import { FaBriefcase, FaGraduationCap } from 'react-icons/fa';
-import { experiencias } from '../data/experiencias';
-import { cor, raio, fonte, espaco } from '../theme/tokens';
+import { FaBriefcase, FaGraduationCap, FaQuoteLeft } from 'react-icons/fa';
+import { experiencias, depoimentos } from '../data/experiencias';
+import Icone from '../components/Icone';
+import { cor, fonte, espaco } from '../theme/tokens';
 import { TelaApp, TituloApp, TituloSecao, Cartao } from '../theme/ui';
 
-// Cada seção da tela: título, ícone, cor do ladrilho e qual categoria ela filtra
+// Cada seção da tela: título, ícone e qual categoria ela filtra
 const SECOES = [
-  { categoria: 'profissional', titulo: 'Experiência profissional', Icone: FaBriefcase, corIcone: cor.laranja },
-  { categoria: 'formacao', titulo: 'Formação & conquistas', Icone: FaGraduationCap, corIcone: cor.azul }
+  { categoria: 'profissional', titulo: 'Experiência profissional', IconeSecao: FaBriefcase },
+  { categoria: 'formacao', titulo: 'Formação & conquistas', IconeSecao: FaGraduationCap }
 ];
 
-// Uma linha da lista (estilo Ajustes do iPhone): ícone colorido + textos + período
-function ItemExperiencia({ exp, Icone, corIcone, primeiro }) {
+// Uma linha da lista (estilo Ajustes do iPhone): ícone-ladrilho + textos + período
+function ItemExperiencia({ exp, IconeSecao, primeiro }) {
   return (
     <div style={{
       display: 'flex',
@@ -18,18 +19,7 @@ function ItemExperiencia({ exp, Icone, corIcone, primeiro }) {
       padding: espaco[4],
       borderTop: primeiro ? 'none' : `1px solid ${cor.divisoria}`
     }}>
-      <span style={{
-        width: '36px',
-        height: '36px',
-        flexShrink: 0,
-        borderRadius: raio.md,
-        background: `linear-gradient(145deg, ${corIcone}, ${corIcone}B3)`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Icone color="#fff" size={16} />
-      </span>
+      <Icone icone={IconeSecao} tamanho={36} ladrilho />
 
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: `${espaco[1]} ${espaco[3]}` }}>
@@ -43,24 +33,73 @@ function ItemExperiencia({ exp, Icone, corIcone, primeiro }) {
   );
 }
 
+// Cartão de depoimento: aspas, texto e quem escreveu
+function Depoimento({ dep }) {
+  return (
+    <Cartao destaque style={{ padding: espaco[5], marginBottom: espaco[3] }}>
+      <FaQuoteLeft color={cor.roxoClaro} size={18} />
+      <p style={{ margin: `${espaco[3]} 0 ${espaco[4]}`, fontSize: fonte.md, lineHeight: 1.7, color: cor.texto, fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>
+        {dep.texto}
+      </p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: espaco[3] }}>
+        {dep.foto ? (
+          <img src={dep.foto} alt={dep.nome} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />
+        ) : (
+          <span style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            background: cor.roxoSuave,
+            border: `1px solid ${cor.roxoBorda}`,
+            color: cor.roxoClaro,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: fonte.negrito
+          }}>
+            {dep.nome.charAt(0).toUpperCase()}
+          </span>
+        )}
+        <div>
+          <div style={{ fontSize: fonte.sm, fontWeight: fonte.semi }}>{dep.nome}</div>
+          <div style={{ fontSize: fonte.xs, color: cor.textoSecundario }}>{dep.cargo} · {dep.empresa}</div>
+        </div>
+      </div>
+    </Cartao>
+  );
+}
+
 export default function Experiencias() {
+  // Só mostra depoimentos que já têm texto
+  const depoimentosPublicados = depoimentos.filter((dep) => dep.texto.trim());
+
   return (
     <TelaApp>
       <TituloApp titulo="Experiências" subtitulo="Onde trabalhei, estudei e o que conquistei pelo caminho." />
 
       {/* Para cada seção, filtra só as experiências daquela categoria */}
-      {SECOES.map(({ categoria, titulo, Icone, corIcone }) => (
+      {SECOES.map(({ categoria, titulo, IconeSecao }) => (
         <section key={categoria}>
           <TituloSecao>{titulo}</TituloSecao>
           <Cartao>
             {experiencias
               .filter((exp) => exp.categoria === categoria)
               .map((exp, i) => (
-                <ItemExperiencia key={exp.id} exp={exp} Icone={Icone} corIcone={corIcone} primeiro={i === 0} />
+                <ItemExperiencia key={exp.id} exp={exp} IconeSecao={IconeSecao} primeiro={i === 0} />
               ))}
           </Cartao>
         </section>
       ))}
+
+      {/* Depoimentos: a seção só aparece quando existe pelo menos um com texto */}
+      {depoimentosPublicados.length > 0 && (
+        <section>
+          <TituloSecao>O que dizem sobre mim</TituloSecao>
+          {depoimentosPublicados.map((dep) => (
+            <Depoimento key={dep.id} dep={dep} />
+          ))}
+        </section>
+      )}
     </TelaApp>
   );
 }

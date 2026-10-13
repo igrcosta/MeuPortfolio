@@ -51,3 +51,18 @@ export const experiencias = [
     descricao: 'Premiado pela melhor animação em stop motion do ano, editando os vídeos sozinho e criando o roteiro: a criatividade já aparecia desde cedo!'
   }
 ];
+
+// Depoimentos (recomendações) de quem trabalhou comigo — aparecem no fim do app "Experiências".
+// "foto" é opcional: coloque a imagem em public/images&Icons/ e escreva o caminho, ex: '/images&Icons/chefe.jpg'
+export const depoimentos = [
+  {
+    id: 'chefe-acesso',
+    nome: 'Thiago Vieira',
+    cargo: 'Chefe',
+    empresa: 'Acesso Marketing',
+    foto: '/Images&Icons/Thiago pfp.jpg',
+    texto: ''
+  }
+
+  // só esperar o Thiago me mandar que coloco aqui :)
+];
