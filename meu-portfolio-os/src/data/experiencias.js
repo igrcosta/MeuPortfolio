@@ -53,7 +53,7 @@ export const experiencias = [
 ];
 
 // Depoimentos (recomendações) de quem trabalhou comigo — aparecem no fim do app "Experiências".
-// "foto" é opcional: coloque a imagem em public/images&Icons/ e escreva o caminho, ex: '/images&Icons/chefe.jpg'
+// "foto" é opcional: colocar a imagem em public/images&Icons/ e escreva o caminho, ex: '/images&Icons/chefe.jpg'
 export const depoimentos = [
   {
     id: 'chefe-acesso',
@@ -61,8 +61,6 @@ export const depoimentos = [
     cargo: 'Chefe',
     empresa: 'Acesso Marketing',
     foto: '/Images&Icons/Thiago pfp.jpg',
-    texto: ''
+    texto: 'O Igor trabalha comigo há pouco mais de seis meses e, desde o início, se destacou pela capacidade de resolver problemas, aprender rápido e assumir cada entrega com responsabilidade e compromisso. Nesse período, liderou a entrega de dashboards automatizados de performance de marketing, oferecendo aos nossos clientes uma visão dos resultados em tempo real.'
   }
-
-  // só esperar o Thiago me mandar que coloco aqui :)
 ];
