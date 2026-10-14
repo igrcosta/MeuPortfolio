@@ -33,7 +33,7 @@ export default function Jogos() {
             ) : (
               <div style={{
                 aspectRatio: '16/9',
-                background: `radial-gradient(ellipse at 30% 0%, ${cor.roxoBrilho}, transparent 70%), radial-gradient(ellipse at 90% 100%, rgba(94, 0, 184, 0.45), transparent 60%), ${cor.pretoRoxo}`,
+                background: `radial-gradient(ellipse at 30% 0%, ${cor.destaqueBrilho}, transparent 70%), ${cor.pretoProfundo}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

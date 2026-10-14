@@ -30,13 +30,13 @@ import BoasVindas from './apps/BoasVindas';
 //   id        -> identificador único
 //   nome      -> aparece no ícone, na Taskbar e no título da janela
 //   icone     -> caminho de imagem em public/ OU ícone do react-icons
-//   cor       -> cor do ladrilho do ícone (paleta: roxo da marca + cores de sistema da Apple)
+//   cor       -> cor do ladrilho do ícone (paleta: monocromática + cores de sistema da Apple)
 //   tamanho   -> tamanho inicial da janela no PC
 //   conteudo  -> o que aparece dentro da janela
 const apps = [
-  { id: 'boasvindas', nome: 'Boas-vindas', icone: FaPlayCircle, cor: cor.roxo, tamanho: { width: 760, height: 560 }, conteudo: <BoasVindas /> },
+  { id: 'boasvindas', nome: 'Boas-vindas', icone: FaPlayCircle, cor: cor.destaque, tamanho: { width: 760, height: 560 }, conteudo: <BoasVindas /> },
   { id: 'sobre', nome: 'Sobre Mim', icone: FaUser, cor: cor.indigo, tamanho: { width: 700, height: 520 }, conteudo: <SobreMim /> },
-  { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: cor.roxoEscuro, tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
+  { id: 'projetos', nome: 'Projetos', icone: FaCode, cor: cor.destaqueEscuro, tamanho: { width: 800, height: 600 }, conteudo: <Projetos /> },
   { id: 'experiencias', nome: 'Experiências', icone: FaBriefcase, cor: cor.laranja, tamanho: { width: 700, height: 520 }, conteudo: <Experiencias /> },
   { id: 'contato', nome: 'Contato', icone: FaEnvelope, cor: cor.verde, tamanho: { width: 600, height: 560 }, conteudo: <Contato /> },
   { id: 'youtube', nome: 'YouTube', icone: FaYoutube, cor: cor.vermelho, tamanho: { width: 1000, height: 680 }, conteudo: <YoutubeApp /> },

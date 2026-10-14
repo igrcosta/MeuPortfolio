@@ -43,7 +43,7 @@ export default function BootScreen({ onFim }) {
         position: 'fixed',
         inset: 0,
         zIndex: 100000,
-        background: `radial-gradient(ellipse at 50% 45%, rgba(157, 0, 255, 0.22) 0%, ${cor.preto} 60%)`,
+        background: `radial-gradient(ellipse at 50% 45%, rgba(255, 255, 255, 0.08) 0%, ${cor.preto} 60%)`,
         color: cor.texto,
         fontFamily: fonte.familia,
         display: 'flex',
@@ -65,9 +65,9 @@ export default function BootScreen({ onFim }) {
           fontWeight: 800,
           letterSpacing: '-0.04em',
           lineHeight: 1,
-          textShadow: '0 0 60px rgba(157, 0, 255, 0.6)'
+          textShadow: '0 0 60px rgba(255, 255, 255, 0.25)'
         }}>
-          Igor<span style={{ color: cor.roxo }}>OS</span>
+          Igor<span style={{ color: cor.textoSecundario }}>OS</span>
         </div>
         <div style={{ color: cor.textoTerciario, fontSize: fonte.xs, letterSpacing: '0.4em', marginTop: '12px' }}>
           PORTFOLIO SYSTEM

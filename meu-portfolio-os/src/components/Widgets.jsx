@@ -31,7 +31,7 @@ function Saudacao() {
   return (
     <div style={cartao}>
       <div style={{ fontSize: fonte.xl, fontWeight: fonte.negrito, letterSpacing: '-0.02em' }}>
-        {saudacao} <span style={{ color: cor.roxoClaro }}>👋</span>
+        {saudacao} <span style={{ color: cor.destaqueClaro }}>👋</span>
       </div>
       <div style={{ fontSize: fonte.sm, color: cor.textoSecundario, marginTop: '4px' }}>
         {dataPorExtenso.charAt(0).toUpperCase() + dataPorExtenso.slice(1)}
@@ -70,8 +70,8 @@ function Visitas() {
 
   return (
     <div style={{ ...cartao, display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ width: '34px', height: '34px', borderRadius: raio.md, background: cor.roxoSuave, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <FaEye color={cor.roxoClaro} />
+      <span style={{ width: '34px', height: '34px', borderRadius: raio.md, background: cor.destaqueSuave, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <FaEye color={cor.destaqueClaro} />
       </span>
       <div>
         <div style={{ fontSize: fonte.lg, fontWeight: fonte.negrito }}>{total.toLocaleString('pt-BR')}</div>

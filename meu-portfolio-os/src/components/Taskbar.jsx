@@ -30,7 +30,7 @@ function BotaoApp({ app, aberto, ativo, onClick, compacta }) {
     >
       <Icone icone={app.icone} tamanho={tamanho} cor={app.cor} ladrilho />
 
-      {/* Indicador de app aberto (maior e roxo no app ativo) */}
+      {/* Indicador de app aberto (maior e branco no app ativo) */}
       {aberto && (
         <span style={{
           position: 'absolute',
@@ -38,7 +38,7 @@ function BotaoApp({ app, aberto, ativo, onClick, compacta }) {
           width: ativo ? '14px' : '4px',
           height: '4px',
           borderRadius: raio.pilula,
-          background: ativo ? cor.roxoClaro : cor.textoSecundario,
+          background: ativo ? cor.destaqueClaro : cor.textoSecundario,
           transition: `width ${transicao.media}`
         }} />
       )}

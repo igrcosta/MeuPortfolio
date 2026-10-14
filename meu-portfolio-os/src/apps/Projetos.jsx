@@ -35,13 +35,13 @@ function CardProjeto({ projeto }) {
     <TimelineItem>
 
       {/* Lado oposto ao card: a data */}
-      <TimelineOppositeContent sx={{ color: cor.roxoClaro, fontWeight: fonte.semi, fontSize: fonte.sm, mt: '14px' }}>
+      <TimelineOppositeContent sx={{ color: cor.destaqueClaro, fontWeight: fonte.semi, fontSize: fonte.sm, mt: '14px' }}>
         {formatarData(projeto.data)}
       </TimelineOppositeContent>
 
       {/* Meio: bolinha + linha */}
       <TimelineSeparator>
-        <TimelineDot sx={{ background: cor.roxoSuave, border: `1px solid ${cor.roxoBorda}`, color: cor.roxoClaro, boxShadow: `0 0 18px ${cor.roxoSuave}` }}>
+        <TimelineDot sx={{ background: cor.destaqueSuave, border: `1px solid ${cor.destaqueBorda}`, color: cor.destaqueClaro, boxShadow: `0 0 18px ${cor.destaqueSuave}` }}>
           <IconeTipo size={14} />
         </TimelineDot>
         <TimelineConnector />
@@ -69,11 +69,11 @@ function CardProjeto({ projeto }) {
           ) : (
             <div style={{
               height: '84px',
-              background: `radial-gradient(ellipse at 30% 0%, ${cor.roxoBrilho}, transparent 70%), ${cor.pretoRoxo}`,
+              background: `radial-gradient(ellipse at 30% 0%, ${cor.destaqueBrilho}, transparent 70%), ${cor.pretoProfundo}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: cor.roxoClaro,
+              color: cor.destaqueClaro,
               fontSize: fonte.lg,
               fontWeight: fonte.negrito,
               letterSpacing: '-0.01em'

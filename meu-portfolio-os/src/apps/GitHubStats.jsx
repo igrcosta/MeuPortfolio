@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaGithub, FaStar, FaBook, FaUsers } from 'react-icons/fa';
-import { cor, vidro, raio, fonte } from '../theme/tokens';
+import { cor, vidro, raio, fonte, escalaCinza } from '../theme/tokens';
 import { TituloSecao } from '../theme/ui';
 
 const USUARIO = 'igrcosta';
@@ -57,12 +57,12 @@ async function buscarDados() {
   return dados;
 }
 
-const CORES = [cor.roxo, cor.roxoClaro, cor.roxoEscuro, cor.indigo, cor.azul, cor.verde];
+const CORES = escalaCinza;
 
 function Numero({ Icone, valor, rotulo }) {
   return (
     <div style={{ flex: '1 1 110px', ...vidro.cartao, borderRadius: raio.lg, padding: '16px', textAlign: 'center' }}>
-      <Icone color={cor.roxoClaro} />
+      <Icone color={cor.destaqueClaro} />
       <div style={{ fontSize: fonte.xl, fontWeight: fonte.negrito, letterSpacing: '-0.02em', margin: '4px 0 0' }}>{valor}</div>
       <div style={{ fontSize: '11px', color: cor.textoSecundario }}>{rotulo}</div>
     </div>
@@ -84,7 +84,7 @@ export default function GitHubStats() {
     return (
       <div style={estilo}>
         <p>Não consegui falar com o GitHub agora 😕</p>
-        <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: cor.roxoClaro }}>
+        <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: cor.destaqueClaro }}>
           Ver meu perfil direto no GitHub
         </a>
       </div>
@@ -104,7 +104,7 @@ export default function GitHubStats() {
         <img src={dados.avatar} alt="" style={{ width: '56px', height: '56px', borderRadius: '50%' }} />
         <div>
           <div style={{ fontWeight: 'bold', fontSize: '17px' }}>{dados.nome}</div>
-          <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: cor.roxoClaro, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <a href={`https://github.com/${USUARIO}`} target="_blank" rel="noopener noreferrer" style={{ color: cor.destaqueClaro, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <FaGithub /> github.com/{USUARIO}
           </a>
         </div>

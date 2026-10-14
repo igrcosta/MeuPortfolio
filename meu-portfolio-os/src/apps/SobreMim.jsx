@@ -41,14 +41,14 @@ export default function SobreMim() {
             height: '112px',
             borderRadius: '50%',
             objectFit: 'cover',
-            border: `3px solid ${cor.roxo}`,
-            boxShadow: `0 0 40px ${cor.roxoBrilho}`
+            border: `3px solid ${cor.destaque}`,
+            boxShadow: `0 0 40px ${cor.destaqueBrilho}`
           }}
         />
         <div>
           <span style={{ color: cor.textoSecundario, fontSize: fonte.sm }}>{texto.saudacao}</span>
           <h1 style={{ margin: '2px 0 4px', fontSize: fonte.xxl, fontWeight: fonte.negrito, letterSpacing: '-0.03em' }}>{texto.nome}</h1>
-          <span style={{ color: cor.roxoClaro, fontSize: fonte.md, fontWeight: fonte.medio }}>{texto.cargo}</span>
+          <span style={{ color: cor.destaqueClaro, fontSize: fonte.md, fontWeight: fonte.medio }}>{texto.cargo}</span>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ export default function SobreMim() {
             display: 'flex',
             gap: espaco[3]
           }}>
-            <span style={{ color: cor.roxoClaro }}>✦</span> {item}
+            <span style={{ color: cor.destaqueClaro }}>✦</span> {item}
           </div>
         ))}
       </Cartao>
@@ -88,7 +88,7 @@ export default function SobreMim() {
             {item.texto}
             {item.link && (
               <a href={item.link} target="_blank" rel="noopener noreferrer" style={{
-                color: cor.roxoClaro,
+                color: cor.destaqueClaro,
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',

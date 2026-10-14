@@ -2,28 +2,28 @@
 // DESIGN TOKENS DO IGOROS
 // Todas as cores, raios, sombras, fontes e espaçamentos do sistema moram aqui.
 // Regra: nenhum componente escreve cor "na mão" — sempre importa daqui.
-// Estética: preto profundo + roxo #9D00FF, vidro fosco (glassmorphism) estilo Apple/visionOS.
+// Estética: preto e branco monocromático, vidro fosco (glassmorphism) estilo Apple/visionOS.
 // =====================================================================
 
 // ---------- CORES ----------
 export const cor = {
-  // Marca
-  roxo: '#9D00FF',
-  roxoClaro: '#B04BFF',                 // texto/ícone roxo legível sobre fundo escuro (contraste 5:1)
-  roxoHover: '#AA22FF',                 // roxo do botão ao passar o mouse
-  roxoEscuro: '#5E00B8',                // ícones e gráficos em tom mais fechado
-  roxoSuave: 'rgba(157, 0, 255, 0.14)', // fundos selecionados
-  roxoBorda: 'rgba(157, 0, 255, 0.45)',
-  roxoBrilho: 'rgba(157, 0, 255, 0.35)',
+  // Destaque monocromático (branco sobre preto, estilo dashboard minimalista)
+  destaque: '#FFFFFF',
+  destaqueClaro: '#FFFFFF',                   // texto/ícone de destaque sobre fundo escuro
+  destaqueHover: '#E5E5E5',                   // botão primário ao passar o mouse
+  destaqueEscuro: '#8E8E93',                  // ícones e gráficos em tom mais fechado
+  destaqueSuave: 'rgba(255, 255, 255, 0.10)', // fundos selecionados
+  destaqueBorda: 'rgba(255, 255, 255, 0.35)',
+  destaqueBrilho: 'rgba(255, 255, 255, 0.10)',
 
   // Base
-  preto: '#05030A',
-  pretoRoxo: '#0B0414',
+  preto: '#0A0A0A',
+  pretoProfundo: '#141414',
 
   // Texto (branco com opacidade, como no macOS)
-  texto: '#F5F2FA',
-  textoSecundario: 'rgba(245, 242, 250, 0.64)',
-  textoTerciario: 'rgba(245, 242, 250, 0.42)',
+  texto: '#F5F5F5',
+  textoSecundario: 'rgba(245, 245, 245, 0.64)',
+  textoTerciario: 'rgba(245, 245, 245, 0.42)',
 
   // Superfícies dentro das janelas
   superficie: 'rgba(255, 255, 255, 0.05)',
@@ -43,6 +43,9 @@ export const cor = {
   spotify: '#1ED760'
 };
 
+// Escala de cinzas para gráficos (do mais claro ao mais escuro)
+export const escalaCinza = ['#FFFFFF', '#C7C7CC', '#8E8E93', '#636366', '#48484A', '#3A3A3C'];
+
 // ---------- VIDRO (glassmorphism) ----------
 // Cada nível é um objeto de estilo pronto para espalhar: style={{ ...vidro.janela }}
 const desfoque = (px) => ({
@@ -51,16 +54,16 @@ const desfoque = (px) => ({
 });
 
 export const vidro = {
-  // Janelas: vidro escuro arroxeado, bem desfocado
+  // Janelas: vidro escuro neutro, bem desfocado
   janela: {
-    background: 'rgba(9, 5, 15, 0.72)',
+    background: 'rgba(12, 12, 12, 0.72)',
     border: `1px solid ${cor.borda}`,
     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
     ...desfoque(40)
   },
   // Dock e widgets: um pouco mais claros
   painel: {
-    background: 'rgba(14, 8, 22, 0.62)',
+    background: 'rgba(18, 18, 18, 0.62)',
     border: `1px solid ${cor.borda}`,
     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
     ...desfoque(28)
@@ -84,7 +87,7 @@ export const raio = {
 // ---------- SOMBRAS (elevação) ----------
 export const sombra = {
   janela: '0 24px 70px rgba(0, 0, 0, 0.55)',
-  janelaAtiva: `0 30px 90px rgba(0, 0, 0, 0.65), 0 0 60px ${cor.roxoSuave}`,
+  janelaAtiva: `0 30px 90px rgba(0, 0, 0, 0.65), 0 0 0 1px ${cor.destaqueSuave}`,
   dock: '0 16px 40px rgba(0, 0, 0, 0.45)',
   icone: '0 6px 16px rgba(0, 0, 0, 0.35)'
 };

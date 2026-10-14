@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { SiWakatime } from 'react-icons/si';
-import { cor, vidro, raio, fonte } from '../theme/tokens';
+import { cor, vidro, raio, fonte, escalaCinza } from '../theme/tokens';
 import { TituloApp, TituloSecao } from '../theme/ui';
 
-const CORES = [cor.roxo, cor.roxoClaro, cor.roxoEscuro, cor.indigo, cor.azul, cor.verde];
+const CORES = escalaCinza;
 
 // Estatísticas de código dos últimos 7 dias (WakaTime), vindas da nossa função serverless /api/wakatime
 export default function WakaTime() {

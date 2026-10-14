@@ -3,7 +3,7 @@ import { FaYoutube, FaThumbsUp, FaRegThumbsUp, FaShareAlt, FaCheck } from 'react
 import { canal, videos } from '../data/youtube';
 import useCurtidas from '../hooks/useCurtidas';
 import useComentarios from '../hooks/useComentarios';
-import { cor, raio, fonte, espaco } from '../theme/tokens';
+import { cor, raio, fonte, espaco, escalaCinza } from '../theme/tokens';
 import { TelaApp, Botao, Cartao } from '../theme/ui';
 
 // "há 5 min", "há 2 h", "há 3 dias"
@@ -20,7 +20,7 @@ function tempoRelativo(dataIso) {
 
 // Avatar com a inicial do apelido, cor sorteada a partir do nome (sempre a mesma para o mesmo apelido)
 function Avatar({ nome, tamanho = 34 }) {
-  const cores = [cor.roxo, cor.roxoEscuro, cor.indigo, cor.azul, cor.roxoHover, cor.laranja];
+  const cores = escalaCinza.slice(2); // só os tons escuros, para a inicial branca ficar legível
   const indice = [...nome].reduce((soma, letra) => soma + letra.charCodeAt(0), 0) % cores.length;
   return (
     <span style={{
@@ -109,7 +109,7 @@ function Comentarios({ videoId }) {
           ) : (
             <span style={{ fontSize: fonte.xs, color: cor.textoSecundario }}>
               Comentando como <strong style={{ color: cor.texto }}>@{apelido}</strong>{' · '}
-              <button type="button" onClick={() => setEditandoApelido(true)} style={{ background: 'none', border: 'none', color: cor.roxoClaro, cursor: 'pointer', padding: 0, fontSize: fonte.xs }}>
+              <button type="button" onClick={() => setEditandoApelido(true)} style={{ background: 'none', border: 'none', color: cor.destaqueClaro, cursor: 'pointer', padding: 0, fontSize: fonte.xs }}>
                 trocar
               </button>
             </span>
@@ -234,7 +234,7 @@ export default function YoutubeApp() {
 
             <div style={{ display: 'flex', gap: espaco[2] }}>
               {curtidas.disponivel && (
-                <Botao onClick={curtidas.alternar} style={{ color: curtidas.curtido ? cor.roxoClaro : cor.texto }}>
+                <Botao onClick={curtidas.alternar} style={{ color: curtidas.curtido ? cor.destaqueClaro : cor.texto }}>
                   {curtidas.curtido ? <FaThumbsUp /> : <FaRegThumbsUp />} {curtidas.total}
                 </Botao>
               )}
@@ -271,8 +271,8 @@ export default function YoutubeApp() {
                         gap: espaco[3],
                         alignItems: 'flex-start',
                         textAlign: 'left',
-                        background: video.id === atual.id ? cor.roxoSuave : 'transparent',
-                        border: `1px solid ${video.id === atual.id ? cor.roxoBorda : 'transparent'}`,
+                        background: video.id === atual.id ? cor.destaqueSuave : 'transparent',
+                        border: `1px solid ${video.id === atual.id ? cor.destaqueBorda : 'transparent'}`,
                         borderRadius: raio.lg,
                         padding: espaco[2],
                         color: cor.texto,

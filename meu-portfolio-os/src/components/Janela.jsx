@@ -42,7 +42,7 @@ export default function Janela({
     onMinimize,
     children,
     zIndex,                                   // quem tem o maior fica na frente
-    ativa = false,                            // true = janela da frente (brilho roxo)
+    ativa = false,                            // true = janela da frente (borda clara)
     minimizada = false,                       // true = escondida (continua no dock)
     onFocus,                                  // chamado ao clicar na janela (traz pra frente)
     isMobile = false,                         // no celular: tela cheia, sem arrastar
@@ -69,7 +69,7 @@ export default function Janela({
             display: 'flex',
             flexDirection: 'column',
             boxShadow: `${vidro.janela.boxShadow}, ${ativa ? sombra.janelaAtiva : sombra.janela}`,
-            borderColor: ativa ? cor.roxoBorda : cor.borda,
+            borderColor: ativa ? cor.destaqueBorda : cor.borda,
             color: cor.texto,
             fontFamily: fonte.familia,
             transition: `border-color ${transicao.media}, box-shadow ${transicao.media}`

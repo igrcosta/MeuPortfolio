@@ -26,7 +26,7 @@ function ItemExperiencia({ exp, IconeSecao, primeiro }) {
           <strong style={{ fontSize: fonte.md, fontWeight: fonte.semi }}>{exp.instituicao}</strong>
           <span style={{ fontSize: fonte.xs, color: cor.textoTerciario, fontWeight: fonte.medio }}>{exp.periodo}</span>
         </div>
-        <div style={{ fontSize: fonte.sm, color: cor.roxoClaro, margin: `2px 0 ${espaco[2]}` }}>{exp.cargo}</div>
+        <div style={{ fontSize: fonte.sm, color: cor.destaqueClaro, margin: `2px 0 ${espaco[2]}` }}>{exp.cargo}</div>
         <p style={{ margin: 0, fontSize: fonte.sm, lineHeight: 1.6, color: cor.textoSecundario }}>{exp.descricao}</p>
       </div>
     </div>
@@ -37,7 +37,7 @@ function ItemExperiencia({ exp, IconeSecao, primeiro }) {
 function Depoimento({ dep }) {
   return (
     <Cartao destaque style={{ padding: espaco[5], marginBottom: espaco[3] }}>
-      <FaQuoteLeft color={cor.roxoClaro} size={18} />
+      <FaQuoteLeft color={cor.destaqueClaro} size={18} />
       <p style={{ margin: `${espaco[3]} 0 ${espaco[4]}`, fontSize: fonte.md, lineHeight: 1.7, color: cor.texto, fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>
         {dep.texto}
       </p>
@@ -49,9 +49,9 @@ function Depoimento({ dep }) {
             width: '40px',
             height: '40px',
             borderRadius: '50%',
-            background: cor.roxoSuave,
-            border: `1px solid ${cor.roxoBorda}`,
-            color: cor.roxoClaro,
+            background: cor.destaqueSuave,
+            border: `1px solid ${cor.destaqueBorda}`,
+            color: cor.destaqueClaro,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

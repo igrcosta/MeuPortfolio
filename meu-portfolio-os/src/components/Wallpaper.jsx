@@ -1,6 +1,6 @@
 import { cor } from '../theme/tokens';
 
-// Papel de parede: imagem em public/wallpapers/ (já tratada para o roxo #9D00FF e escurecida).
+// Papel de parede: imagem em public/wallpapers/ (convertida para preto e branco via filtro).
 // Para trocar, basta substituir o arquivo ou mudar o caminho abaixo.
 const IMAGEM = '/wallpapers/igoros.jpg';
 
@@ -15,7 +15,8 @@ export default function Wallpaper() {
         backgroundColor: cor.preto,
         backgroundImage: `url("${IMAGEM}")`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center',
+        filter: 'grayscale(1)'
       }}
     />
   );

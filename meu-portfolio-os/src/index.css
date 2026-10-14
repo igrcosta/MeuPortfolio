@@ -16,16 +16,16 @@ body,
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  background: #05030A;
-  color: #F5F2FA;
+  background: #0A0A0A;
+  color: #F5F5F5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'cv11', 'ss01';
 }
 
-/* Seleção de texto e barras de rolagem no tom roxo do sistema */
+/* Seleção de texto e barras de rolagem no tom neutro do sistema */
 ::selection {
-  background: rgba(157, 0, 255, 0.45);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 ::-webkit-scrollbar {
@@ -51,6 +51,6 @@ body {
 
 /* Foco visível para quem navega pelo teclado */
 :focus-visible {
-  outline: 2px solid #B04BFF;
+  outline: 2px solid #FFFFFF;
   outline-offset: 2px;
 }

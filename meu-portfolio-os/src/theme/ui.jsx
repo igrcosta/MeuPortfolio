@@ -33,7 +33,7 @@ export function TituloApp({ titulo, subtitulo, Icone }) {
         alignItems: 'center',
         gap: espaco[3]
       }}>
-        {Icone && <Icone color={cor.roxoClaro} size={22} />}
+        {Icone && <Icone color={cor.destaqueClaro} size={22} />}
         {titulo}
       </h2>
       {subtitulo && (
@@ -70,7 +70,7 @@ export function Cartao({ children, style, destaque = false }) {
       ...vidro.cartao,
       borderRadius: raio.lg,
       overflow: 'hidden',
-      ...(destaque && { borderColor: cor.roxoBorda, background: cor.roxoSuave }),
+      ...(destaque && { borderColor: cor.destaqueBorda, background: cor.destaqueSuave }),
       ...style
     }}>
       {children}
@@ -83,9 +83,9 @@ export function Etiqueta({ children }) {
   return (
     <span style={{
       display: 'inline-block',
-      background: cor.roxoSuave,
-      color: cor.roxoClaro,
-      border: `1px solid ${cor.roxoBorda}`,
+      background: cor.destaqueSuave,
+      color: cor.destaqueClaro,
+      border: `1px solid ${cor.destaqueBorda}`,
       borderRadius: raio.pilula,
       padding: '3px 10px',
       fontSize: fonte.xs,
@@ -97,12 +97,12 @@ export function Etiqueta({ children }) {
   );
 }
 
-// Botão: "primario" (roxo cheio) ou "vidro" (translúcido). Vira link se receber href.
+// Botão: "primario" (branco cheio) ou "vidro" (translúcido). Vira link se receber href.
 export function Botao({ children, onClick, href, variante = 'vidro', type = 'button', disabled = false, style }) {
   const [hover, setHover] = useState(false);
 
   const estilos = {
-    primario: { background: hover ? cor.roxoHover : cor.roxo, color: '#fff', border: '1px solid transparent' },
+    primario: { background: hover ? cor.destaqueHover : cor.destaque, color: cor.preto, border: '1px solid transparent' },
     vidro: { background: hover ? cor.superficieHover : cor.superficie, color: cor.texto, border: `1px solid ${cor.borda}` }
   };
 
@@ -131,10 +131,10 @@ export function Botao({ children, onClick, href, variante = 'vidro', type = 'but
   return <button type={type} onClick={onClick} disabled={disabled} style={base} {...eventos}>{children}</button>;
 }
 
-// Link de texto roxo
+// Link de texto em destaque
 export function LinkTexto({ href, children, style }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: cor.roxoClaro, textDecoration: 'none', fontWeight: fonte.medio, ...style }}>
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: cor.destaqueClaro, textDecoration: 'none', fontWeight: fonte.medio, ...style }}>
       {children}
     </a>
   );

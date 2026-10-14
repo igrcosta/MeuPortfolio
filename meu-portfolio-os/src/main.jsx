@@ -9,10 +9,10 @@ import { cor, fonte, raio } from './theme/tokens'
 const tema = createTheme({
   palette: {
     mode: 'dark',
-    primary: { main: cor.roxo, light: cor.roxoClaro, contrastText: '#fff' },
+    primary: { main: cor.destaque, light: cor.destaqueClaro, contrastText: cor.preto },
     error: { main: cor.vermelho },
     success: { main: cor.verde },
-    background: { default: cor.preto, paper: 'rgba(28, 16, 44, 0.9)' },
+    background: { default: cor.preto, paper: 'rgba(24, 24, 24, 0.92)' },
     text: { primary: cor.texto, secondary: cor.textoSecundario },
     divider: cor.divisoria
   },
@@ -26,12 +26,12 @@ const tema = createTheme({
           borderRadius: raio.md,
           '& .MuiOutlinedInput-notchedOutline': { borderColor: cor.borda },
           '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.25)' },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: cor.roxoClaro }
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: cor.destaqueClaro }
         }
       }
     },
     MuiInputLabel: {
-      styleOverrides: { root: { color: cor.textoSecundario, '&.Mui-focused': { color: cor.roxoClaro } } }
+      styleOverrides: { root: { color: cor.textoSecundario, '&.Mui-focused': { color: cor.destaqueClaro } } }
     },
     MuiButton: {
       styleOverrides: {
