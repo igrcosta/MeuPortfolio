@@ -50,7 +50,7 @@
 ---
 
 ## Links Úteis
-* 🌐 **Site no ar:** [igor-portfolio-eight.vercel.app](https://igor-portfolio-eight.vercel.app/)
+* 🌐 **Site no ar:** [[https://igorcosta.dev](https://igorcosta.dev)
   > 💻 Hospedado gratuitamente na **Vercel**, com deploy automático a cada `push` na branch `main`.
 * 🔗 **Links diretos para apps:** o parâmetro `?abrir=` abre apps específicos ao entrar no site. Ex.: [`?abrir=projetos`](https://igor-portfolio-eight.vercel.app/?abrir=projetos) ou [`?abrir=sobre,contato`](https://igor-portfolio-eight.vercel.app/?abrir=sobre,contato).
 
